@@ -1,0 +1,25 @@
+<page title="Impressum">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1><ht key="contact.title"><%=t :contact  %></ht></h1>
+      <section>
+        <br/>
+
+        <p>
+          <strong><%=t :e_mail_contact  %>:</strong><br/><br/>info@k-monitor.hu
+        </p>
+        <br />
+        <br />
+        <br />
+        <br />
+      </section>
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+
+</page>

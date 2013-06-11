@@ -1,0 +1,40 @@
+<index-page without-count without-top-page-nav without-bottom-page-nav without-content-header>
+  <append-head:>
+    <script>
+      (function($) {
+        $(function(){
+
+          $("#organizations_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#organizations_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#organizations_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#organizations_content").html(data)}});
+            e.preventDefault();
+          });
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <collection: replace>
+    <div class="tabs" style="margin-top:36px">
+      <div class="tab active"><a href="#organizations_content"><%=t :organizations_caps  %></a></div>
+    </div>
+    <div id="organizations_content">
+      <table-plus-org fields="this, address, relations_counter, information_source" with="&@organizations" without-table-footer>
+        <order-list:>
+          <a href="/organizations/list?sort=name" class="left active"><%=t :alphabetical_order  %></a><div class="separator left">|</div>
+          <a href="/organizations/list?sort=updated_at" class="left"><%=t :creation_order  %></a><div class="separator left">|</div>
+          <a href="/organizations/list?sort=address" class="left"><%=t :address  %></a><div class="separator left">|</div>
+          <a href="/organizations/list?sort=relations_counter" class="left"><%=t :rels  %></a><div class="separator left">|</div>
+          <a href="/organizations/list?sort=information_source" class="left"><%=t :information_source  %></a><div class="separator left">|</div>
+		  <a href="/organizations/list?sort=founded_at" class="left"><%=t :founded_at  %></a>
+		</order-list:>
+        <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+      </table-plus-org>
+    </div>
+  </collection:>
+</index-page>
+<%= google_analytics_js %>

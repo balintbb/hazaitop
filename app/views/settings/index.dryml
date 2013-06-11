@@ -1,0 +1,37 @@
+<page title="Settings">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1><ht key="custom.settings">Settings</ht></h1>
+      <section class="welcome-message">
+        <h3><ht key="custom.relations">Relations</ht></h3>
+
+          <navigation if="&current_user.administrator?">
+            <nav-item with="&OToORelationType"><ht key="o_to_o_relation_types.nav_item">Interorganizational Relation Types</ht></nav-item>
+            <nav-item with="&PToORelationType"><ht key="p_to_o_relation_types.nav_item">Person and Organization Relation Types</ht></nav-item>
+            <nav-item with="&OToPRelationType"><ht key="p_to_o_relation_types.nav_item">Person and Organization Relation Types</ht> Pairs</nav-item>
+            <nav-item with="&PToPRelationType"><ht key="p_to_p_relation_types.nav_item">Interpersonal Relation Types</ht></nav-item>
+            <nav-item with="&InterpersonalRelationCalculator"><ht key="interpersonal_relation_calculators.nav_item">Interpersonal Relation Matrix</ht></nav-item>
+          </navigation>
+
+        <h3><ht key="custom.qualities">Qualities</ht></h3>
+
+          <navigation if="&current_user.administrator?">
+            <nav-item with="&PersonGrade"><ht key="person_grades.nav_item">Person Grades</ht></nav-item>
+            <nav-item with="&OrgGrade"><ht key="org_grades.nav_item">Organizational Grades</ht></nav-item>
+            <nav-item with="&Activity"><ht key="activities.nav_item">Activity Types</ht></nav-item>
+            <nav-item with="&Sector"><ht key="sectors.nav_item">Sectors</ht></nav-item>
+          </navigation>
+
+      </section>
+
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+
+</page>
+<%= google_analytics_js %>

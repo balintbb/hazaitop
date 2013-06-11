@@ -1,0 +1,15 @@
+<table-plus-person with="&@people" without-table-footer fields="this, interpersonal_relations_count, person_to_org_relations_count,  information_source">
+  <order-list:>
+    <a href="/people/list?sort=name" class="left #{!params[:sort] || @people_sort == 'name' ? 'active' : ''}"><%=t :alphabetical_order  %></a>
+    <div class="separator left">|</div>
+    <a href="/people/list?sort=updated_at" class="left #{@people_sort == 'updated_at' ? 'active' : ''}"><%=t :creation_order  %></a>
+    <div class="separator left">|</div>
+    <a href="/people/list?sort=interpersonal_relations_count" class="left #{@people_sort == 'interpersonal_relations_count' ? 'active' : ''}"><%=t :most_personal_relations  %></a>
+    <div class="separator left">|</div>
+    <a href="/people/list?sort=person_to_org_relations_count" class="left #{@people_sort == 'person_to_org_relations_count' ? 'active' : ''}"><%=t :most_organizational_relations  %></a>
+    <div class="separator left">|</div>
+    <a href="/people/list?sort=information_source" class="left #{@people_sort == 'information_source' ? 'active' : ''}"><%=t :information_source  %></a>
+  </order-list:>
+  <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+</table-plus-person>
+<%= google_analytics_js %>

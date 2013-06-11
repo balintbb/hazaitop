@@ -1,0 +1,49 @@
+<show-page>
+<!--  <field-list: skip="unique_string, interorg_relation, user"> -->
+  <field-list: fields = "project, op_name, amount, subsidy, currency, city, county, region, decided_at, decision_score, 
+  found, source, url, szerz_hatalyos, proj_leiras,  proj_terv_kezd,proj_terv_bef, proj_teny_kezd, proj_teny_bef, applicant, caller, information_source, contracts" >
+
+    <subsidy-view:>
+      <%= this ? "#{ this * 100 }%" : "" %>
+    </subsidy-view:>
+    <amount-view:>
+      <%= commify(this) %>
+    </amount-view:>
+    <url-view:>
+      <a href="&this" target="_blank">link</a>
+    </url-view:>	
+	
+	<project-view:><view if-blank="" /></project-view:>
+	<op_name-view:><view if-blank="" /></op_name-view:>
+	<currency-view:><view if-blank="" /></currency-view:>
+	<city-view:><view if-blank="" /></city-view:>
+	<county-view:><view if-blank="" /></county-view:>
+	<region-view:><view if-blank="" /></region-view:>
+	<decided_at-view:><view if-blank="" /></decided_at-view:>
+	<decision_score-view:><view if-blank="" /></decision_score-view:>
+	<found-view:><view if-blank="" /></found-view:>
+	<source-view:><view if-blank="" /></source-view:>
+	<szerz_hatalyos-view:><view if-blank="" /></szerz_hatalyos-view:>
+	<proj_leiras-view:><view if-blank="" /></proj_leiras-view:>
+	<proj_terv_kezd-view:><view if-blank="" /></proj_terv_kezd-view:>
+	<proj_terv_bef-view:><view if-blank="" /></proj_terv_bef-view:>
+	<proj_teny_kezd-view:><view if-blank="" /></proj_teny_kezd-view:>
+	<proj_teny_bef-view:><view if-blank="" /></proj_teny_bef-view:>
+	<applicant-view:><view if-blank="" /></applicant-view:>
+	<caller-view:><view if-blank="" /></caller-view:>
+	<information_source-view:><view if-blank="" /></information_source-view:>
+	<contracts-view:><view if-blank="" /></contracts-view:>
+	
+	
+
+	
+  </field-list:>
+  <append-content-body:>
+  
+  	<br/>
+	<hr/>
+		<%=t :updated_at %> <%= this.updated_at.strftime("%Y-%m-%d %H:%M") %>
+	<hr/>
+  </append-content-body:>
+</show-page>
+<%= google_analytics_js %>

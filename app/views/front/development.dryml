@@ -1,0 +1,55 @@
+<page title="Development">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1><ht key="development.title">Development</ht></h1>
+      
+  <section class="devpage">
+
+        <br />
+        <div class="left"><img src="/images/PetaByte_Logo_small.png"/></div>
+        <div>
+          <br />
+          PetaByte Tudományos Kutató és Fejleszto Nonprofit kft.<br/>
+          Kapcsolat: <a href="mailto:balint@petabyte-research.org">balint@petabyte-research.org</a><br/>
+          Forráskód: <a target="_blank" href="http://github.com/balintbb/hazaitop/">open source</a><br/>
+          <br />
+        </div>
+        
+          <br />
+
+
+
+      </section>
+      <section class="devpage">
+
+        <br />
+        <div class="left"><img src="/images/amitaba-mudra-logo.gif"/></div>
+        <div>
+          <br />
+          AMITABA-MUDRA Kft.<br/>
+          Kapcsolat: <a href="mailto:miklos.beky@gmail.com">miklos.beky@gmail.com</a><br/>
+          <!-- Forráskód: <a target="_blank" href="http://github.com/ikko/hazaitop/">open source</a><br/> -->
+          <br />
+        </div>
+        <p>
+          <br />
+          <br />
+          Partnerek: Honti Pál és <a href="http://digitalnatives.hu" target="_blank">Digital Natives</a>.
+        </p>
+        
+          <br />
+
+
+
+      </section>
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+
+</page>
+<%= google_analytics_js %>

@@ -1,0 +1,65 @@
+<show-page>
+  <!--append-custom-scripts:>
+    <hjq-assets/>
+  </append-custom-scripts:-->
+  <append-head:>
+    <script>
+      (function($) {
+        $(function(){
+          $("#people_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content .table-plus").html(data)}});
+            e.preventDefault();
+          });
+          $("#orgs_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content .table-plus").html(data)}});
+            e.preventDefault();
+          });
+          $("#people_orgs_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_orgs_content .table-plus").html(data)}});
+            e.preventDefault();
+          });
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <content-body:>
+ 
+    <div class="details_header"><%=t :article_data  %>:</div>
+    <if test="&current_user.editor? or current_user.supervisor? or current_user.administrator?">
+      <transition-buttons class="right"/>
+      <field-list fields="processed_at, user"/>
+    </if>
+    <field-list fields="issued_at, summary, information_source, internet_address, original_source, original_internet_address">
+      <internet-address-view:>
+        <a href="&this" target="_blank"><view/></a>
+      </internet-address-view:>
+      <original-internet-address-view:>
+        <a href="&this" target="_blank"><view/></a>
+      </original-internet-address-view:>
+    </field-list>
+
+    <div class="details_header"><%=t :related_profiles  %>:</div>
+    <div class="contents">
+      <div class="tabs" style="width: 507px">
+        <div class="active tab"><a href="#people_content"><%=t :people_caps  %></a></div><div class="separator"></div>
+        <div class="tab"><a href="#orgs_content"><%=t :organizations_caps  %></a></div><div class="separator"></div>
+        <div class="tab" style="width: 225px"><a href="#people_orgs_content"> <%=t :people_organizations_caps  %></a></div>
+      </div>
+      <div id="people_content" class="tab_content">
+        <table-plus-article-interpersonal with="&@interpersonal_relations"/>    
+      </div>
+      <div id="orgs_content" class="tab_content" style="display: none">
+        <table-plus-article-interorg with="&@interorg_relations"/>
+      </div>
+      <div id="people_orgs_content" class="tab_content" style="display: none">
+        <table-plus-article-person-to-org with="&@person_to_org_relations"/>
+      </div>
+    </div>
+
+  </content-body:>
+
+</show-page>
+<%= google_analytics_js %>

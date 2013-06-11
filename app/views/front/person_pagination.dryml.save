@@ -1,0 +1,31 @@
+
+
+  <div class="order_list">
+    <a href="/front/person_pagination/?sort=-person_to_org_relations_count" class="left #{!params[:sort] || @sort_field=='person_to_org_relations_count' ? 'active' : ''}">Legtöbb szervezeti kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-interpersonal_relations_count" class="left #{@sort_field=='interpersonal_relations_count' ? 'active' : ''}">Legtöbb személyes kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-search_result_count" class="left #{@sort_field=='search_result_count' ? 'active' : ''}">Legtöbbet keresett</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-updated_at" class="left #{@sort_field=='updated_at' ? 'active' : ''}">Most frissített</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=name" class="left #{@sort_field=='name' ? 'active' : ''}">ABC sorrend</a>
+    
+   <div class="separator left">|</div>
+   <a href="/front/person_pagination/?sort=updated_at" class="left #{@sort_field=='information-source-view:information_source.name' ? 'active' : ''}">Forr</a>
+
+
+  </div>
+  <table-plus fields="this, relations_counter, selected_organization, information_source" without-search-form without-page-nav with="&@people">
+    <Person-heading:><span>Név</span></Person-heading:>
+    <selected-organization-heading:>Szervezet</selected-organization-heading:>
+    <relations-counter-heading:><span>Kapcsolat</span></relations-counter-heading:>
+    <information-source-heading:><span>Forrás</span></information-source-heading:>
+    <relations-counter-view:><%= this_parent.interpersonal_relations_count + this_parent.person_to_org_relations_count %></relations-counter-view:>
+    <selected-organization-view:><a with="&this" target="_blank"/></selected-organization-view:>
+    <information-source-view:><a with="&this" target="_blank"/></information-source-view:>
+    <this-view:><a target="_blank"/> <a target="_blank" href="/site_search/?type=p&id=#{this.id}"><img src="/images/plusz.png"/></a> </this-view:>
+    <selected-organization-view:><a target="_blank"/> <a unless="&this.nil?" href="/site_search/?type=o&id=#{this.id}" target="_blank"><img src="/images/plusz.png"/></a> </selected-organization-view:>
+  </table-plus>
+  <div class="table_footer"><a href="#{people_path}">További személyek &gt;</a></div>
+

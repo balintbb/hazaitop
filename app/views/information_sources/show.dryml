@@ -1,0 +1,15 @@
+<show-page>
+  
+   <field-list: fields="domain_name, web">  
+     <web-view:>
+       <a href="&this" target="_blank"><view/></a>
+     </web-view:>
+   </field-list>
+
+   <append-content-body:>
+     <div class="details_header"><%=t :recent_articles  %>:</div>
+     <collection:recent_articles/>
+   </append-content-body:>
+
+</show-page>
+<%= google_analytics_js %>

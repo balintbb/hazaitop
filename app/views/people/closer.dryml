@@ -1,0 +1,23 @@
+<page>
+  <content:>
+    <br/>
+    <br/>
+    <form with="&InterpersonalRelation.new" action="closest">
+
+      <h3><%=t :closer1  %>:</h3>
+      <hjq-autocomplete:person         source="&query_people_path" delay="220" minLength="3" />
+      <hjq-autocomplete:related_person source="&query_people_path" delay="220" minLength="3" />
+      <input id="ignore_press" checked="checked" type="checkbox" name="ignore_press"/><label class="strong"><%=t :closer2  %></label><br />
+      <%
+        @cl3 = t(:closer3)
+        
+      %>
+      <submit label="#{@cl3}"/>
+
+    </form>
+    <br/>
+    <br/>
+
+  </content:>
+</page>
+<%= google_analytics_js %>

@@ -1,0 +1,43 @@
+<index-page without-count without-top-page-nav without-bottom-page-nav without-content-header>
+  <append-head:>
+    <script>
+      (function($) {
+        $(function(){
+
+          $("#people_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#people_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content").html(data)}});
+            e.preventDefault();
+          });
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <collection: replace>
+    <div class="tabs" style="margin-top:36px">
+      <div class="tab active"><a href="#people_content"><%=t :people_caps  %></a></div>
+    </div>
+    <div id="people_content">
+      <table-plus-person fields="this, interpersonal_relations_count, person_to_org_relations_count,  information_source" with="&@people" without-table-footer>
+        <order-list:>
+          <a href="/people/list?sort=name" class="left active"><%=t :alphabetical_order  %></a>
+          <div class="separator left">|</div>
+          <a href="/people/list?sort=updated_at" class="left"><%=t :creation_order  %></a>
+           <div class="separator left">|</div>
+          <a href="/people/list?sort=interpersonal_relations_count" class="left"><%=t :most_personal_relations  %></a>
+          <div class="separator left">|</div>
+          <a href="/people/list?sort=person_to_org_relations_count" class="left"><%=t :most_organizational_relations  %></a>
+          <div class="separator left">|</div>
+           <a href="/people/list?sort=information_source" class="left"><%=t :information_source  %></a>
+        </order-list:>
+        <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+      </table-plus-person>
+    </div>
+  </collection:>
+</index-page>
+<%= google_analytics_js %>

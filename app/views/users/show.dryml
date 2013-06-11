@@ -1,0 +1,11 @@
+<show-page>
+  <append-content-body:>
+    <if test="&current_user.signed_up? and ( @this.person_histories.count > 0 or @this.org_histories.count > 0 ) ">
+      <h3 class="save_history">Save History for People</h3>
+      <table-plus with="&@this.person_histories" fields="person, updated_at" without-search-form/>
+      <h3 class="save_history">Save History for Organizations</h3>
+      <table-plus with="&@this.org_histories" fields="organization, updated_at" without-search-form/>
+    </if>
+  </append-content-body:>
+</show-page>
+<%= google_analytics_js %>

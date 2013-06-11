@@ -1,0 +1,41 @@
+<index-page without-count without-top-page-nav without-bottom-page-nav without-content-header>
+  <append-head:>
+    <script>
+      (function($) {
+        $(function(){
+
+          $("#people_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#interpersonal_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#interpersonal_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#interpersonal_content").html(data)}});
+            e.preventDefault();
+          });
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <collection: replace>
+    <div class="tabs" style="margin-top:36px">
+      <div class="tab active"><a href="#interpersonal_content">SZEMÃLYEK</a></div>
+    </div>
+    <div id="interpersonal_content">
+      <table-plus-person fields="this, relations_counter, selected_organization,  information_source" with="&@people" without-table-footer>
+        <order-list:>
+          <a href="/people/list?sort=-order_name" class="left active">ABC szerint</a>
+          <div class="separator left">|</div>
+          <a href="/people/list?sort=-updated_at" class="left">Beviteli sorrendben</a>
+          <div class="separator left">|</div>
+          <a href="/people/list?sort=selected_organization" class="left">Szervezet</a>
+           <div class="separator left">|</div>
+          <a href="/people/list?sort=information_source" class="left">Forras</a>
+        </order-list:>
+        <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+      </table-plus-person>
+    </div>
+  </collection:>
+</index-page>
+

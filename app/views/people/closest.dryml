@@ -1,0 +1,12 @@
+<page>
+  <content:>
+    <div class="api content-body">
+      <br/>
+      <h2>
+        <a target="_blank" with="&@a"/> <%=t :andd  %> <a target="_blank" with="&@b"/>
+      </h2>
+      <%= @this %>
+    </div>
+  </content:>
+</page>
+<%= google_analytics_js %>

@@ -1,0 +1,64 @@
+
+<show-page>
+  <field-list: fields = "no_of_proposals, sum_value, original_sum_value, contracted_value,original_contracted_value, estimated_value, city, currency, subject_and_qty, 
+							issued_at, case_number, place_of_performance, source_url, number, notification, tenders" >
+
+
+
+	<sum-value-view:><view with="&commify(this)"/></sum-value-view:>
+    <original_sum_value-value-view:><view with="&commify(this)"/></original_sum_value-value-view:>	
+    <contracted-value-view:><view with="&commify(this)"/></contracted-value-view:>
+    
+    <estimated-value-view:><view with="&commify(this)"/></estimated-value-view:>
+
+
+	<no_of_proposals-view:><view if-blank="" /></no_of_proposals-view:>	
+	<city-view:><view if-blank="" /></city-view:>	
+	<currency-view:><view if-blank="" /></currency-view:>	
+	<subject_and_qty-view:><view if-blank="" /></subject_and_qty-view:>	
+	<issued_at-view:><view if-blank="" /></issued_at-view:>	
+	<case_number-view:><view if-blank="" /></case_number-view:>	
+	<place_of_performance-view:><view if-blank="" /></place_of_performance-view:>	
+	<source_url-view:><view if-blank="" /></source_url-view:>	
+	<number-view:><view if-blank="" /></number-view:>	
+	<notification-view:><view if-blank="" /></notification-view:>	
+	<tenders-view:><view if-blank="" /></tenders-view:>	
+	
+  </field-list:>
+  <append-content-body:>
+  
+  <table class="field-list">
+	<tr>
+		<if:seller>
+			<th class="no-of-proposals-label"><%=t :seller  %>:</th>
+			<td><view/></td>
+		</if>
+	</tr><tr>		
+		<if:seller_person>
+			<th class="no-of-proposals-label"><%=t :seller  %>:</th>
+			<td><view/></td>
+		</if>
+	</tr><tr>		
+		<if:buyer>
+			<th class="no-of-proposals-label"><%=t :buyer  %>:</th>
+			<td><view/></td>
+		</if>
+	</tr><tr>		
+		<if:buyer_person>
+			<th class="no-of-proposals-label"><%=t :buyer  %>:</th>
+			<td><view/></td>
+		</if>		
+	</tr>	
+		
+  </table>
+
+
+    <%= this.cpvs.empty? ? "" : this.cpvs.*.to_s.join("<br/>") %> <br/><br/>
+    <strong>Link:</strong> <a href="&this.source_url" target="_blank"><%= this.source_url %></a><br />
+	<br/>
+	<hr/>
+		<%=t :updated_at %> <%= this.updated_at.strftime("%Y-%m-%d %H:%M") %>
+	<hr/>
+  </append-content-body:>
+</show-page>
+<%= google_analytics_js %>

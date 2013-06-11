@@ -1,0 +1,22 @@
+<page title="Impressum">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1><ht key="impressum.title">Impressum</ht></h1>
+      <section>
+
+        <p><%=t :impr1  %></p>
+        <br />
+        <p><%=t :imp_text  %></p>
+
+      </section>
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+
+</page>
+<%= google_analytics_js %>

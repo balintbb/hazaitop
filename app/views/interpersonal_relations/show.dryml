@@ -1,0 +1,34 @@
+<show-page>
+  <heading:>
+    <view:person/> <%=t :andd  %> <view:related_person/>
+  </heading:>
+  <record-flags: replace></record-flags:>
+  <field-list: fields="p_to_p_relation_type, start_time, end_time, information_source, organization">
+    <p_to_p-relation-type-label:> 
+      <%=t :rels  %> 
+    </p_to_p-relation-type-label:>
+    <end-time-label:>
+       <%
+        @endt = t(:end_time)
+      %>
+      <%= this_parent.no_end_time? ? "" : "#{@endt}" %>
+    </end-time-label:>
+    <end-time-view:>
+      <view unless="&this_parent.no_end_time?"/>
+    </end-time-view:>
+    <organization-label:>
+      <%
+        @orga = t(:organization)
+        
+      %>
+      <%= this_parent.organization ? "#{@orga}" : '' %>
+    </organization-label:>
+    <organization-view:>
+      <view:organization if="&this_parent.organization"/>
+    </organization-view:>
+  </field-list:>
+  <collection-heading: class="details_header">
+    Cikkek:
+  </collection-heading:>
+</show-page>
+<%= google_analytics_js %>

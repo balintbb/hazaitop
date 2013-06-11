@@ -1,0 +1,549 @@
+<!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
+
+<def tag="form" for="Activity">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'activities.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="ActivityAssoc">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="activity, organization" param/>
+    <div param="actions">
+      <submit label="#{ht 'activity_assocs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Announcement">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, end_time, content, labjegyezet, tipus, tipusnev, issued_at, ugyszam, eugyszam, birosag, felszamolo_neve, felszamolo_cime, felszamolo_cgjsz, felszbizt1_nev, felszbizt1_cim, felszbizt1_irsz, felszbizt2_nev, felszbizt2_cim, felszbizt2_irsz, legal_at, submitted_at, organization" param/>
+    <div param="actions">
+      <submit label="#{ht 'announcements.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Article">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, summary, internet_address, weblink, processed_at, issued_at, original_internet_address, original_source, to_news, state, information_source, interorg_relations, interpersonal_relations, person_to_org_relations, user" param/>
+    <div param="actions">
+      <submit label="#{ht 'articles.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+<def tag="progress-form" polymorphic/>
+<def tag="progress-form" for="Article">
+  <form lifecycle="progress" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="processed_at" param/>
+    <div param="actions">
+      <submit label="#{ht 'articles.actions.progress', :default=>['Progress']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="BuyerActivity">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'buyer_activities.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="BuyerType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'buyer_types.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="ContractFrame">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'contract_frames.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="ContractType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'contract_types.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Contract">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="no_of_proposals, name, description, sum_value, original_sum_value, s_vat_incl, contracted_value, c_vat_incl, original_contracted_value, estimated_value, city, e_vat_incl, currency, subject_and_qty, number, issued_at, case_number, place_of_performance, source_url, buyer, buyer_person, notification, seller, seller_person" param/>
+    <div param="actions">
+      <submit label="#{ht 'contracts.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Cpv">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, description, contracts" param/>
+    <div param="actions">
+      <submit label="#{ht 'cpvs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="DetailedSearch">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="query, address, subject, date_from, date_to, person, organization, article, litigation, date_from_enable, date_to_enable, amount_from, amount_to, contract, tender, activities, cpvs, detailed_search_relations, place_of_births, relations, sectors" param/>
+    <div param="actions">
+      <submit label="#{ht 'detailed_searches.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Financial">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="year, start_time, end_time, szorzo, penznem, balance_sheet_total, turnover, a_eredm, aktiv_el, eszk, celtart, netto, forgo, kotelez, m_eredm, passziv_el, toke, u_eredm, labj, organization" param/>
+    <div param="actions">
+      <submit label="#{ht 'financials.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Front">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'fronts.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Front">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'fronts.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="InformationSource">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, web, weight, domain_name, internal" param/>
+    <div param="actions">
+      <submit label="#{ht 'information_sources.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="InterorgRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, mirrored, mirror, weight, visual, value, start_time, end_time, no_end_time, currency, vat_incl, issued_at, erased_at, note, role, role2, jelentos, tobbsegi, kozvetlen, szavazat_50_szazalek_felett, szavazat_tobbsegi_befolyas, szavazat_egyeduli_reszvenyes, parsed, address, article_relations, articles, contract, information_source, interorg_relation, litigations, notification, o_to_o_relation_type, organization, related_organization, tender" param/>
+    <div param="actions">
+      <submit label="#{ht 'interorg_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="InterpersonalRelationCalculator">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="weight, p_to_o_relation_type, p_to_p_relation_type, related_p_to_o_relation_type" param/>
+    <div param="actions">
+      <submit label="#{ht 'interpersonal_relation_calculators.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="InterpersonalRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="mirrored, mirror, start_time, end_time, no_end_time, no_start_time, internal, weight, visual, erased_at, parsed, article_relations, articles, information_source, interpersonal_relation, litigations, organization, other_person_to_org_relation, p_to_p_relation_type, person, person_to_org_relation, related_person" param/>
+    <div param="actions">
+      <submit label="#{ht 'interpersonal_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Liquidation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, end_time, note, stays, simple, process_start, process_end, organization" param/>
+    <div param="actions">
+      <submit label="#{ht 'liquidations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="LitigationRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="litigable_type, litigable, litigation" param/>
+    <div param="actions">
+      <submit label="#{ht 'litigation_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Litigation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, description, start_time, end_time, information_source" param/>
+    <div param="actions">
+      <submit label="#{ht 'litigations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Notification">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, issued_at, processed, number, contracted_value, contracts" param/>
+    <div param="actions">
+      <submit label="#{ht 'notifications.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="OToORelationType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, weight, visual, litig, parsed, role, label, pair" param/>
+    <div param="actions">
+      <submit label="#{ht 'o_to_o_relation_types.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="OToORelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="o_to_o_relation_type, relation" param/>
+    <div param="actions">
+      <submit label="#{ht 'o_to_o_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="OToPRelationType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, weight, visual, litig, label, parsed, mirror_of, p_to_p_relation_type, pair" param/>
+    <div param="actions">
+      <submit label="#{ht 'o_to_p_relation_types.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="OrgGrade">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'org_grades.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Organization">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, alternate_name, klink, street, city, country, zip_code, phone, fax, email_address, internet_address, trade_register_nr, tax_nr, founded_at, number_of_employees, relations_counter, relations_bit, complexed_at, ksh_number, ksh_number_from, social_security_number, social_security_number_from, stock, ceased_at, ceased_from, kozhasznu, kozhasznu_from, kiemelten_kozhasznu, kiemelten_kozhasznu_from, civil, description, country_id_nr, county_id_nr, complex_xml, company, address, activities, financials, information_source, interorg_relations, law_successor, manual_interorg_relations, manual_person_to_org_relations, merge_from, org_grade, organizations, person_to_org_relations, sector, user" param/>
+    <div param="actions">
+      <submit label="#{ht 'organizations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PToORelationType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, weight, visual, litig, label, parsed, p_to_p_relation_type, pair" param/>
+    <div param="actions">
+      <submit label="#{ht 'p_to_o_relation_types.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PToORelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="p_to_o_relation_type, relation" param/>
+    <div param="actions">
+      <submit label="#{ht 'p_to_o_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PToPRelationType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, weight, internal, visual, litig, label, parsed, pair" param/>
+    <div param="actions">
+      <submit label="#{ht 'p_to_p_relation_types.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PToPRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="p_to_p_relation_type, relation" param/>
+    <div param="actions">
+      <submit label="#{ht 'p_to_p_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Person">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="first_name, last_name, name, street, city, zip_code, country, klink, born_at, mothers_name, mothers_name_alternate, complexed_at, relations_counter, relations_bit, complex_xml, address, cv, link, order_name, information_source, interpersonal_relations, manual_interpersonal_relations, manual_person_to_org_relations, merge_from, person_grades, person_to_org_relations, personal_relations, place_of_birth, selected_organization, user" param/>
+    <div param="actions">
+      <submit label="#{ht 'people.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PersonGradeAssoc">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="person, person_grade" param/>
+    <div param="actions">
+      <submit label="#{ht 'person_grade_assocs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PersonGrade">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'person_grades.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PersonToOrgRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, end_time, no_end_time, no_start_time, weight, visual, role, role2, note, erased_at, jelentos, tobbsegi, kozvetlen, szavazat_50_szazalek_felett, szavazat_tobbsegi_befolyas, szavazat_egyeduli_reszvenyes, parsed, article_relations, articles, contract, information_source, litigations, o_to_p_relation_type, organization, p_to_o_relation_type, person" param/>
+    <div param="actions">
+      <submit label="#{ht 'person_to_org_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="PlaceOfBirth">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'place_of_births.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Relation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="o_to_o_relation_types, p_to_o_relation_types, p_to_p_relation_types" param/>
+    <div param="actions">
+      <submit label="#{ht 'relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Sector">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'sectors.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Setting">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'settings.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Tender">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, project, op_name, amount, subsidy, currency, city, county, region, decided_at, decision_score, unique_string, found, source, url, szerz_hatalyos, proj_leiras, proj_terv_kezd, proj_terv_bef, proj_teny_kezd, proj_teny_bef, applicant, caller, information_source, interorg_relation, user" param/>
+    <div param="actions">
+      <submit label="#{ht 'tenders.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="TradeRegisterNumber">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, end_time, nr, note, organization" param/>
+    <div param="actions">
+      <submit label="#{ht 'trade_register_numbers.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="User">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, email_address, administrator, editor, supervisor, state" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="invite-form" polymorphic/>
+<def tag="invite-form" for="User">
+  <form lifecycle="invite" merge param="default">
+    <error-messages param/>
+    <field-list fields="name, email_address, editor, supervisor" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.invite', :default=>['Invite']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="accept-invitation-form" polymorphic/>
+<def tag="accept-invitation-form" for="User">
+  <form lifecycle="accept_invitation" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="password, password_confirmation" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.accept_invitation', :default=>['Accept Invitation']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="reset-password-form" polymorphic/>
+<def tag="reset-password-form" for="User">
+  <form lifecycle="reset_password" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="password, password_confirmation" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.reset_password', :default=>['Reset Password']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+

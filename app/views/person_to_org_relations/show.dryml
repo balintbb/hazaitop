@@ -1,0 +1,27 @@
+<show-page>
+  <heading:>
+    <view:person/> és <view:organization/>
+  </heading:>
+  <record-flags: replace></record-flags:>
+  <field-list: fields="p_to_o_relation_type, start_time, end_time">
+    <p_to_o-relation-type-label:> 
+      <%=t :rels  %> 
+    </p_to_o-relation-type-label:>
+    <p_to_o-relation-type-view:>
+      <view/> <%= '&nbsp;' %> <view with="&this_parent.role" if="&this_parent.role"/>
+    </p_to_o-relation-type-view:>
+    <end-time-label:>
+       <%
+        @endt = t(:end_time)
+      %>
+      <%= this_parent.no_end_time ? "" : "#{@endt}" %>
+    </end-time-label:>
+    <end-time-view:>
+      <view unless="&this_parent.no_end_time"/>
+    </end-time-view:>
+  </field-list:>
+  <collection-heading: class="details_header">
+    <%=t :artic  %>:
+  </collection-heading:>
+</show-page>
+<%= google_analytics_js %>

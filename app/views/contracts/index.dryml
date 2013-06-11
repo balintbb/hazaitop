@@ -1,0 +1,16 @@
+<index-page>
+  <count:>
+    <ht key="contract.collection.count" count="&Organization.count">
+      There <count prefix="are"/>
+    </ht>
+  </count:>
+  <top-page-nav: inner-window="14" />
+  <bottom-page-nav: inner-window="14" />
+  <prepend-content-body:>
+    <div id="index_page_order">
+      <a class="button" href="/contracts/list?sort=name"><%=t :alphabetical_order  %></a>
+      <a class="button" href="/contracts/list?sort=created_at"><%=t :creation_order  %></a>
+    </div>
+  </prepend-content-body:>
+</index-page>
+<%= google_analytics_js %>

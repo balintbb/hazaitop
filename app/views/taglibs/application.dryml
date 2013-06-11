@@ -1,0 +1,2 @@
+<!-- Global taglib - these tags are shared across all subsites -->
+<%= google_analytics_js %>

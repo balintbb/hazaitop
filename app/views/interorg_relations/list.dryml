@@ -1,0 +1,34 @@
+<table-plus-trans with="&@transactions" without-table-footer fields="name, updated_at, value,organization, o_to_o_relation_type, related_organization, information_source">
+
+
+  <order-list:>
+    <a href="/transactions/list?sort=#{get_sort_param('value', 'desc')}" class="left #{!params[:sort] || @sort_field == 'value' ? 'active' : ''}"><%=t :value_order  %></a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=#{get_sort_param('name', 'desc')}" class="left #{@sort_field == 'name' ? 'active' : ''}"><%=t :alphabetical_order  %></a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=#{get_sort_param('updated_at', 'desc')}" class="left #{@sort_field == 'updated_at' ? 'active' : ''}"><%=t :creation_order  %></a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=#{get_sort_param('organization', 'desc')}" class="left #{@sort_field == 'organization' ? 'active' : ''}"><%=t :organization  %></a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=#{get_sort_param('o_to_o_relation_type', 'desc')}" class="left #{@sort_field == 'o_to_o_relation_type' ? 'active' : ''}"><%=t :rels  %></a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=#{get_sort_param('related_organization', 'desc')}" class="left #{@sort_field == 'related_organization' ? 'active' : ''}"><%=t :related_organization  %></a>
+    <div class="separator left">|</div> 
+    <a href="/transactions/list?sort=#{get_sort_param('information_source', 'desc')}" class="left #{@sort_field == 'information_source' ? 'active' : ''}"><%=t :information_source  %></a>
+
+  </order-list:>
+  
+  <value-view:>
+      <view with="&commify(this)"/>
+  </value-view:>
+  <name-view:><%= this ? "#{ this.scan(/./)[0..34].join('')+'...' }" : "" %></name-view:>
+  <updated_at-view:><view if-blank="" format="%Y.%m.%d"/></updated_at-view:>
+  <organization-view:><view if-blank=""/></organization-view:>
+  <related_organization-view:><view if-blank=""/></related_organization-view:>
+  
+  
+  
+  
+  <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+</table-plus-trans>
+<%= google_analytics_js %>

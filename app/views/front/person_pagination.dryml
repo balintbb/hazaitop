@@ -1,0 +1,29 @@
+
+
+  <div class="order_list">
+    <a href="/front/person_pagination/?sort=-person_to_org_relations_count" class="left #{!params[:sort] || @sort_field=='person_to_org_relations_count' ? 'active' : ''}"><%=t :most_organizational_relations  %></a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-interpersonal_relations_count" class="left #{@sort_field=='interpersonal_relations_count' ? 'active' : ''}"><%=t :most_personal_relations  %></a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-search_result_count" class="left #{@sort_field=='search_result_count' ? 'active' : ''}"><%=t :most_searched_for  %></a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-updated_at" class="left #{@sort_field=='updated_at' ? 'active' : ''}"><%=t :updated_at  %></a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=name" class="left #{@sort_field=='name' ? 'active' : ''}"><%=t :alphabetical_order  %></a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-person_to_org_relations_count" class="left #{@sort_field=='person_to_org_relations_count' ? 'active' : ''}"><%=t :most_organizational_relations  %></a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=information_source" class="left #{@sort_field=='information_source' ? 'active' : ''}"><%=t :information_source  %></a>
+  </div>
+  <table-plus fields="this, interpersonal_relations_counter, person_to_org_relations_counter, information_source" without-search-form without-page-nav with="&@people">
+    <Person-heading:><span><%=t :name  %></span></Person-heading:>
+    <interpersonal-relations-counter-heading:><span><%=t :most_personal_relations  %></span></interpersonal-relations-counter-heading:>
+    <person-to-org-relations-counter-heading:><span><%=t :most_organizational_relations  %></span></person-to-org-relations-counter-heading:>
+    <information-source-heading:><span><%=t :information_source  %></span></information-source-heading:>
+    <interpersonal-relations-counter-view:><%= this_parent.interpersonal_relations_count %></interpersonal-relations-counter-view:>
+    <person-to-org-relations-counter-view:><%= this_parent.person_to_org_relations_count %></person-to-org-relations-counter-view:>
+    <information-source-view:><a with="&this" /></information-source-view:>
+    <this-view:><a /> <a href="/visual.php?type=p&id=#{this.id}"><img src="/images/plusz.png"/></a> </this-view:>
+  </table-plus>
+  <div class="table_footer"><a href="#{people_path}"><%=t :further_people  %> &gt;</a></div>
+<%= google_analytics_js %>

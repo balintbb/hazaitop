@@ -1,0 +1,366 @@
+<page>
+  <!--append-custom-scripts:>
+    <hjq-assets/>
+  </append-custom-scripts:-->
+  <append-head:>
+    <script>
+      (function($) {
+        $(function(){
+		
+              $('#profil_person').attr('checked', true);
+              $('#profil_organization').attr('checked', false);
+              $('#data_article').attr('checked', false);
+              $('#data_litigation').attr('checked', false);		
+		
+			$('#date_from').datepicker();
+			$('#date_to').datepicker();
+		
+          $("#people_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content").html(data)}});
+            e.preventDefault();
+          });
+          
+          $("#orgs_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content").html(data)}});
+            e.preventDefault();
+          });
+          
+          $("#contract_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#contract_content").html(data)}});
+            e.preventDefault();
+          });
+          
+          $("#tender_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#tender_content").html(data)}});
+            e.preventDefault();
+          });
+          
+          $("#litigs_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#litigs_content").html(data)}});
+            e.preventDefault();
+          });
+          
+          $("#arts_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#arts_content").html(data)}});
+            e.preventDefault();
+          });
+
+          $('.data_transaction').change(function() {
+          if ($('#data_contract').is(':checked') || $('#data_tender').is(':checked')) {
+              $('#profil_person').attr('checked', false);
+              $('#profil_organization').attr('checked', false);
+              $('#data_article').attr('checked', false);
+              $('#data_litigation').attr('checked', false);
+              $('#amount_from').attr('disabled', false);
+              $('#amount_to').attr('disabled', false);
+              $('#subject').attr('disabled', false);
+              $('#activity_selector').attr('disabled', true);
+              $('#sector_selector').attr('disabled', true);
+              $('#detailed_search_relations_-1_add').attr('disabled', true);
+              $('.select-many span').addClass('disabled');
+              $('select').addClass('disabled');
+            } else {
+              $('#profil_person').attr('checked', true);
+              $('#profil_organization').attr('checked', false);
+              $('#data_article').attr('checked', false);
+              $('#data_litigation').attr('checked', false);
+              $('#amount_from').attr('disabled', true);
+              $('#amount_to').attr('disabled', true);
+              $('#subject').attr('disabled', true);
+              $('#activity_selector').attr('disabled', false);
+              $('#sector_selector').attr('disabled', false);
+              $('#detailed_search_relations_-1_add').attr('disabled', false);
+              $('.select-many span').removeClass('disabled');
+              $('select').removeClass('disabled');
+            }
+            if ($('#data_contract').is(':checked')) {
+              $('#cpv_selector').attr('disabled', false)
+              $('#cpv_selector').removeClass('disabled');
+              $('.cpvs-view .item span').removeClass('disabled');
+            } else 
+            {
+              $('#cpv_selector').attr('disabled', true)
+              $('#cpv_selector').addClass('disabled');
+              $('.cpvs-view .item span').addClass('disabled');
+            }
+          });
+
+          checkTransaction = function() {
+
+            if ($('#data_tender').is(':checked')) {
+              $('#amount_from').attr('disabled', true)
+              $('#amount_to').attr('disabled', true)
+              $('#subject').attr('disabled', true)
+            } 
+            if ($('#profil_person').is(':checked') || $('#profil_organization').is(':checked')) {
+              $('#activity_selector').attr('disabled', false);
+              $('#sector_selector').attr('disabled', false);
+              $('#detailed_search_relations_-1_add').attr('disabled', false);
+              $('.select-many span').removeClass('disabled');
+              $('select').removeClass('disabled');
+            } else {
+              $('#activity_selector').attr('disabled', true);
+              $('#sector_selector').attr('disabled', true);
+              $('#detailed_search_relations_-1_add').attr('disabled', true);
+              $('.select-many span').addClass('disabled');
+              $('select').addClass('disabled');
+            }
+            if ($('#profil_person').is(':checked') || $('#profil_organization').is(':checked') || $('#data_article').is(':checked') || $('#data_litigation').is(':checked') )
+            {
+              $('#data_contract').attr('checked', false);
+              $('#data_tender').attr('checked', false);
+            }
+            if ($('#data_contract').is(':checked')) {
+              $('#amount_from').attr('disabled', false)
+              $('#amount_to').attr('disabled', false)
+              $('#subject').attr('disabled', false)
+              $('#cpv_selector').attr('disabled', false)
+              $('#cpv_selector').removeClass('disabled');
+              $('.cpvs-view .item span').removeClass('disabled');
+            } else 
+            {
+              $('#amount_from').attr('disabled', true)
+              $('#amount_to').attr('disabled', true)
+              $('#subject').attr('disabled', true)
+              $('#cpv_selector').attr('disabled', true)
+              $('#cpv_selector').addClass('disabled');
+              $('.cpvs-view .item span').addClass('disabled');
+            }
+          }
+		  
+			$('#detailed_search_date_from_year').attr('disabled', true);
+			$('#detailed_search_date_from_month').attr('disabled', true);
+			$('#detailed_search_date_from_day').attr('disabled', true);		  
+			$('#detailed_search_date_from_enable').change(
+				function(){
+					if ($('#detailed_search_date_from_enable').is(':checked')) {
+						$('#detailed_search_date_from_year').attr('disabled', false);
+						$('#detailed_search_date_from_month').attr('disabled', false);
+						$('#detailed_search_date_from_day').attr('disabled', false);
+					} else {
+						$('#detailed_search_date_from_year').attr('disabled', true);
+						$('#detailed_search_date_from_month').attr('disabled', true);
+						$('#detailed_search_date_from_day').attr('disabled', true);
+					}
+				}
+			);
+
+		  
+			$('#detailed_search_date_to_year').attr('disabled', true);
+			$('#detailed_search_date_to_month').attr('disabled', true);
+			$('#detailed_search_date_to_day').attr('disabled', true);		  
+			$('#detailed_search_date_to_enable').change(
+				function(){
+					if ($('#detailed_search_date_to_enable').is(':checked')) {
+						$('#detailed_search_date_to_year').attr('disabled', false);
+						$('#detailed_search_date_to_month').attr('disabled', false);
+						$('#detailed_search_date_to_day').attr('disabled', false);
+					} else {
+						$('#detailed_search_date_to_year').attr('disabled', true);
+						$('#detailed_search_date_to_month').attr('disabled', true);
+						$('#detailed_search_date_to_day').attr('disabled', true);
+					}
+				}
+			);
+          
+          $('#profil_person').change(checkTransaction);
+          $('#profil_organization').change(checkTransaction);
+          $('#data_article').change(checkTransaction);
+          $('#data_litigation').change(checkTransaction);
+
+          $('#activity_selector').change(function() {
+            $('#profil_person').attr('checked', false);
+            $('#profil_organization').attr('checked', true);
+            $('#data_article').attr('checked', false);
+            $('#data_litigation').attr('checked', false);
+            $('#data_contract').attr('checked', false);
+            $('#data_tender').attr('checked', false);
+          });
+
+          $('#sector_selector').change(function() {
+            $('#profil_person').attr('checked', false);
+            $('#profil_organization').attr('checked', true);
+            $('#data_article').attr('checked', false);
+            $('#data_litigation').attr('checked', false);
+            $('#data_contract').attr('checked', false);
+            $('#data_tender').attr('checked', false);
+          });
+          checkTransaction();
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <content:>
+    <header class="content-header">
+      <h2>Részletes keresés</h2>
+    </header>
+    <!--header class="content-header">
+      <h2>Keresési találatok</h2>
+    </header-->
+    <div id="detailed_search_wrapper">
+      <form with="&@detailed_search">
+        <fieldset class="no_top_border">
+          <field-list: id="query" fields="query, address, subject">
+            <subject-view:>
+              <input id="subject" disabled="&!(@detailed_search.contract or @detailed_search.tender)"/>
+            </subject-view:>
+          </field-list:>  
+        </fieldset>
+
+
+
+
+		
+	<fieldset>
+		<field-list: fields="date_from_enable, date_from" without-date-from-enable-label>
+			<with-fields  fields="date_from_enable, date_from">
+				<input id="#{this_field}" />
+			</with-fields>
+		</field-list:>
+	</fieldset>  
+	<fieldset>
+		<field-list: fields="date_to_enable, date_to" without-date-to-enable-label>
+			<with-fields  fields="date_to_enable, date_to">
+				<input id="#{this_field}" />
+			</with-fields>
+		</field-list:>
+	</fieldset>  
+
+	<fieldset>		  
+          <field-list: fields="amount_from" style="clear: both;" class="left inline_input clear">
+            <amount-from-view:>
+              <input id="amount_from" disabled="&!(@detailed_search.contract or @detailed_search.tender)"/>
+              <div class="from_to_separator"></div>
+            </amount-from-view:>
+          </field-list:>
+          <field-list: fields="amount_to" class="left" without-amount-to-label>
+            <amount-to-view:>
+              <input id="amount_to" disabled="&!(@detailed_search.contract or @detailed_search.tender)"/>
+            </amount-to-view:>
+          </field-list:>
+        </fieldset>
+        <fieldset>
+          <span>Profil:</span>
+          <with-fields  fields="person, organization">
+            <input class="checkbox" id="profil_#{this_field}"/><label class="checkbox_label"><%= this_field_name %></label>
+          </with-fields>
+          <br />
+          <span>Adat:</span>
+          <with-fields  fields="article, litigation">
+            <input class="checkbox" id="data_#{this_field}"/><label class="checkbox_label"><%= this_field_name %></label>
+          </with-fields>
+          <br />
+          <span>Tranzakció:</span>
+          <with-fields  fields="contract, tender">
+            <input class="checkbox data_transaction" id="data_#{this_field}"/><label class="checkbox_label"><%= this_field_name %></label>
+          </with-fields>
+        </fieldset>
+        <fieldset>
+          <field-list: fields="cpvs">
+            <cpvs-view:>
+              <select-many prompt="Téma (CPV kód) hozzáadása">
+                <select: id="cpv_selector"/>
+              </select-many>
+            </cpvs-view:>
+          </field-list:>
+        </fieldset>
+        <fieldset>
+          <field-list: fields="relations">
+            <relations-view:>
+                <input-many-relation id="relation_selector"/>
+            </relations-view:>
+          </field-list:>
+        </fieldset>
+        <fieldset>
+          <field-list: fields="activities">
+            <activities-view:>
+              <select-many prompt="Tevékenység hozzáadása">
+                <select: id="activity_selector"/>
+              </select-many>
+            </activities-view:>
+          </field-list:>
+        </fieldset>
+        <fieldset>
+          <field-list: fields="sectors">
+            <sectors-view:>
+              <select-many prompt="Ágazat hozzáadása">
+                <select: id="sector_selector"/>
+              </select-many>
+            </sectors-view:>
+          </field-list:>
+        </fieldset>
+        <fieldset class="no_bottom_border">
+          <submit name="submit" class="right" id="detailed_search_submit_button" value="Keresés"/>
+        </fieldset>
+      </form>
+    </div>
+    <% if !@empty_search %>
+		<div class="details_header"><%= @search_q %></div>
+      <% if @detailed_search.contract or @detailed_search.tender %>
+        <% if @detailed_search.contract and @contract_search_count %>
+          <div class="details_header">Közbeszerzések: (<%= @contract_search_count %> találat)</div>
+          <div id="contract_content">
+            <collection-contract with="&@contracts"/>
+          </div>
+        <% end %>
+        <% if @detailed_search.tender  and @tender_search_count%>
+          <div class="details_header">Pályázatok: (<%= @tender_search_count %> találat)</div>
+          <div id="tender_content">
+            <collection-tender with="&@tenders"/>
+          </div>
+        <% end %>
+      <% else %>
+        <if test="&@detailed_search.person">
+			
+          <div class="details_header">Személyek: (<%= @people_search_count %> találat)</div>  
+          <div id="people_content">
+            <collection-person with="&@people"/>
+          </div>
+        </if>
+		
+        <if test="&@detailed_search.organization">
+          <div class="details_header">Szervezetek: (<%= @organization_search_count %> találat)</div>  
+          <div id="org_content">
+            <collection-organization with="&@organizations"/>
+          </div>
+        </if>		
+
+        <if test="&@detailed_search.article">
+          <div class="details_header">Cikk: (<%= @article_search_count %> találat)</div>  
+          <div id="article_content">
+            <collection-article with="&@articles"/>
+          </div>
+        </if>		
+
+        <if test="&@detailed_search.litigation">
+          <div class="details_header">Per: (<%= @litigation_search_count %> találat)</div>  
+          <div id="litigation_content">
+            <collection-litigation with="&@litigations"/>
+          </div>
+        </if>		
+		
+        <if test="&@detailed_search.contract">
+          <div class="details_header">Szerződés: (<%= @contract_search_count %> találat)</div>  
+          <div id="contract_content">
+            <collection-contract with="&@contracts"/>
+          </div>
+        </if>	
+
+        <if test="&@detailed_search.tender">
+          <div class="details_header">Közbeszerzés: (<%= @tender_search_count %> találat)</div>  
+          <div id="tender_content">
+            <collection-tender with="&@tenders"/>
+          </div>
+        </if>			
+		
+		
+      <% end %>
+    <% end %>
+  </content:>
+</page>

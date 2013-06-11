@@ -1,0 +1,13 @@
+<table-plus-org with="&@organizations" without-table-footer>
+  <order-list:>
+    <a href="/organizations/list?sort=name" class="left #{!params[:sort] || @org_sort == 'name' ? 'active' : ''}"><%=t :alphabetical_order  %></a><div class="separator left">|</div>
+    <a href="/organizations/list?sort=updated_at" class="left #{@org_sort == 'updated_at' ? 'active' : ''}"><%=t :creation_order  %></a><div class="separator left">|</div>
+    <a href="/organizations/list?sort=address" class="left #{@org_sort == 'address' ? 'active' : ''}"><%=t :address  %></a><div class="separator left">|</div>
+    <a href="/organizations/list?sort=relations_counter" class="left #{@org_sort == 'relations_counter' ? 'active' : ''}"><%=t :rels  %></a><div class="separator left">|</div>
+    <a href="/organizations/list?sort=information_source" class="left #{@org_sort == 'information_source' ? 'active' : ''}"><%=t :information_source  %></a><div class="separator left">|</div>
+	<a href="/organizations/list?sort=founded_at" class="left #{@org_sort == 'founded_at' ? 'active' : ''}"><%=t :founded_at  %></a>
+  </order-list:>
+  <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+</table-plus-org>
+
+<%= google_analytics_js %>

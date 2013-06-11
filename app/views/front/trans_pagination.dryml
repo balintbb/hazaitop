@@ -1,0 +1,2 @@
+<table-plus-trans with="&@transactions" without-page-nav/>
+<%= google_analytics_js %>

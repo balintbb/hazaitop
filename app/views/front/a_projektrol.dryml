@@ -1,0 +1,25 @@
+<page title="Impressum">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1><ht key="about.title"><%=t :about_project  %></ht></h1>
+      <section>
+
+        <p><%=t :imp_head  %></p>
+        <br />
+        <p><%=t :imp_text  %> </p>
+
+        <br />
+        <br />
+        <br />
+
+      </section>
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+
+</page>

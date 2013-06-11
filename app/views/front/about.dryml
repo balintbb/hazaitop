@@ -1,0 +1,24 @@
+<page title="Impressum">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1><ht key="how-it-works.title"><%=t :about_project  %></ht></h1>
+      <section>
+
+        <br />
+        <p><%=t :about_text  %></p>
+
+        <br />
+        <br />
+        <br />
+      </section>
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+
+</page>
+<%= google_analytics_js %>

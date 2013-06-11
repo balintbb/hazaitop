@@ -1,0 +1,1491 @@
+<include src="rapid" plugin="hobo"/>
+
+<include src="taglibs/auto/rapid/cards"/>
+<include src="taglibs/auto/rapid/pages"/>
+<include src="taglibs/auto/rapid/forms"/>
+
+<include src="hobo-jquery" plugin="hobo-jquery"/>
+
+<set-theme name="clean"/>
+
+<def tag="view" for="Date">
+  <%= this.blank? ? "" : this.strftime('%Y.%m.%d.').downcase %>
+</def>
+
+<extend tag="page">
+  <old-page merge>
+    <title:><%= "#{this.try.name ? '('+this.name+') ' : ''}a HÁLÓ" %></title>
+    <custom-scripts:>
+      <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+      <hjq-assets/>
+      <script>
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20915206-1']);
+        _gaq.push(['_setDomainName', '.addig.hu']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+         var news = [];
+        <% Article.recent(5).each do |article| %>
+          <%= "news.push('<a href=\"#{url_for(article)}\">#{article.name}</a><span class=\"news_separator\"></span>');" %>;
+        <% end %>
+      </script>
+    </custom-scripts:>
+    <stylesheets:>
+      <stylesheet name="reset, application"/>
+    </stylesheets:>
+    <header:>
+      <div id="header_links">
+        <a href="/" id="logo">a HÁLÓ</a>
+        <div class="header_link_column">
+          <strong>PROFILOK</strong>
+          <ul>
+            <li><a href="/people">Személyek</a></li>
+            <li><a href="/organizations">Szervezetek</a></li>
+            <li><a href="/transactions/?sort=-value">Tranzakciók</a></li>
+          </ul>
+        </div>
+        <div class="header_link_column">
+          <strong>HÁLÓ</strong>
+          <ul>
+            <li><a href="/site_search">Térkép</a></li>
+            <li><a href="/front/how_it_works">Hogyan működik?</a></li>
+            <!--li><a href="/people/closer">Legrövidebb út</a></li-->
+          </ul>
+        </div>
+        <div class="header_link_column">
+          <strong>RÓLUNK</strong>
+          <ul>
+            <li><a href="/front/about">A projektről</a></li>
+            <li><a href="/front/contact">Kapcsolat</a></li>
+          </ul>
+        </div>
+        <div class="header_link_column last" style="">
+          <strong>
+            <% if current_user.signed_up? %>
+              <a href="/logout">KIJELENTKEZÉS</a>
+            <% else %>
+              <a href="/login">BEJELENTKEZÉS</a>
+            <% end %>
+          </strong>
+          <div id="search_box">
+            <div id="search_wrapper"><form with="&nil" action="/detailed_searches" method="post"><input type="text" name="query" id="search_input" value="Keresés"/><input type="submit" id="search_button" value="Submit"/></form></div>
+            <script>
+              jQuery('#search_input').focus(function(){
+                jQuery(this).attr('value') == 'Keresés' ? jQuery(this).attr('value', '') : '';;
+              });
+              jQuery('#search_input').focusout(function(){
+                jQuery(this).attr('value') == '' ? jQuery(this).attr('value', 'Keresés') : '';
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+      <div id="header_infoline">
+        <div class="left" id="arrows"><a class="left_arrow" href="">◂</a><a class="right_arrow" href="">▸</a></div>
+        <!-- NOTE: class-t és id-t js kódban is újraépítjük lapozásnál, így ha itt változtatunk akkor ott is kell -->
+        <%= '<marquee class="left" id="news">' %>
+          <% Article.recent(5).each do |article| %>
+            <a href="#{url_for(article)}"><%= article.name %></a><span class="news_separator"></span>
+          <% end %>
+        <%= '</marquee>' %>
+      <div class="right"><%= Time.now.strftime("%Y. %B %d.").downcase -%><div class="separator">|</div><a target="_blank" href="http://www.k-monitor.hu">www.k-monitor.hu</a></div>
+      </div>
+    </header:>
+    <content:>
+
+    </content:>
+    <footer:>
+
+      <div id="logos" class="left">
+        <a href="http://www.k-monitor.hu" target="_blank">
+          <img src="/images/k-monitor-logo.jpg" height="50" alt="K-Monitor Közhasznú Egyesület"/>
+        </a>
+        <a href="http://www.tasz.hu/" target="_blank">
+          <img src="/images/tasz-logo.png" height="50" alt="Társaság a Szabadságjogokért" />
+        </a>
+        <a href="http://www.transparency.org" target="_blank">
+          <img src="/images/transparency-international-logo.gif" height="50" alt="Transparency International"/>
+        </a>
+        <a href="/front/development" target="_blank">
+          <img src="/images/amitaba-mudra-logo.gif" height="50" alt="AMITABA-MUDRA Kft." />
+        </a>
+      </div>
+      <div class="left" id="licenses">
+        <div id="licenses_images" class="left">
+          <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.hu" target="_blank">
+            <img alt="Creative Commons Licenc" style="border-width:0;width=88px;height=31px" src="/images/cc.png"/>
+          </a>
+          <a target="_blank" href="http://opendefinition.org/">
+            <img alt="This material is Open Data" border="0" src="http://m.okfn.org/images/ok_buttons/od_80x15_blue.png" style="width:88px"/>
+          </a>
+        </div>
+        <div id="licenses_text" class="left">
+          Ez a Mű a <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.hu">Licenc</a> feltételeinek megfelelően szabadon felhasználható.*<br />Forráskód: <a href="/front/development" target="_blank">open source</a> fejlesztés.<br />*Az oldalon található idézetek a hivatkozott jogtulajdonosok teljes terjedelmű cikkeiből származnak és azok tulajdonát képezik.
+        </div>
+      </div>
+      <div id="footer_bottom_links">
+        <a href="#{base_url}/front/development"><ht key="development.footer">fejlesztés</ht></a> | <a href="#{base_url}/front/impressum"><ht key="impressum.footer">impresszum</ht></a> | <a href="/front/api">api</a> | <a href="/front/contact">kapcsolat</a> <span id="copyright">Copyright 2010-<%= Time.now.to_date.year %> K-Monitor KhE. and AMITABA - MUDRA Kft.</span>
+      </div>
+    </footer:>
+  </old-page>
+</extend>
+
+<def tag="app-name">Hazai Top - K wiw</def>
+
+<def tag="main-nav">
+  <navigation class="main-nav" merge-attrs param="default">
+    <nav-item with="&Person"><ht key="people.nav_item">People</ht></nav-item>
+    <nav-item with="&Organization"><ht key="organizations.nav_item">Organizations</ht></nav-item>
+    <nav-item with="&Article"><ht key="articles.nav_item">Articles</ht></nav-item>
+    <nav-item with="&Litigation"><ht key="litigations.nav_item">Litigations</ht></nav-item>
+    <nav-item with="&Contract"><ht key="contracts.nav_item">Közbeszerzés</ht></nav-item>
+    <nav-item href="/site_search"><ht key="visualize.nav_item">Visualize</ht></nav-item>
+    <nav-item href="/front/api"><ht key="api.nav_item">API</ht></nav-item>
+    <nav-item if="&current_user.administrator? or current_user.editor?" with="&InformationSource"><ht key="information_sources.nav_item">Sources</ht></nav-item>
+    <nav-item if="&current_user.administrator? or current_user.editor?" href="#{base_url}/settings"><ht key="settings.nav_item">Settings</ht></nav-item>
+  </navigation>
+</def>
+
+
+<!-- = = = = = = = CARDS = = = = = = = -->
+
+
+<def tag="card" for="Contract">
+  <card class="contract" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><view/></a></h4>
+      <a target="_blank"><h5><view with="&commify(this.contracted_value)"/> <view:currency/> <view with="&this.c_vat_incl ? 'ÁFÁ-val' : 'ÁFA nélkül'"/></h5></a>
+    </header:>
+    <body: param>
+      <strong><view:seller.name/></strong><br/>
+      <strong><view:buyer.name/></strong><br/>
+      ajánlattevők száma: <view:no_of_proposals/><br />
+      <a class="notification_url" href="&this.source_url" target="_blank">forrás</a> | <a target="_blank"><view:notification/></a>
+    </body:>
+  </card>
+</def>
+
+
+<def tag="card" for="Tender">
+  <card class="tender" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><view/></a></h4>
+      <a target="_blank"><h5><view with="&commify(this.amount)"/> <view:currency/> </h5></a>
+    </header:>
+    <body: param>
+      <strong><view:caller.name/></strong><br/>
+      <strong><view:applicant.name/></strong><br/>
+      <a href="&this.url" target="_blank">forrás</a> | <a target="_blank"><view:op_name if="&this.op_name"/><view:found if="&this.found"/> | <view:name/></a><br/>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Organization">
+  <card class="organization" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a></h4>
+    </header:>
+    <body: param>
+      <div if="&this.relations_bit">
+        <span class="strong"><%= this.interorg_relations_count + this.person_to_org_relations_count %></span> kapcsolat 
+        (<span if="&this.person_to_org_relations_count>0">
+          <view:person_to_org_relations_count class="strong"/> személyes<span if="&this.interorg_relations_count>0">,</span>
+        </span>
+        <span if="&this.interorg_relations_count>0">
+          <view:interorg_relations_count class="strong"/> szervezeti
+        </span>)
+      </div>
+      <view:city class="strong"/> <view:street/>
+      <view:trade_register_nr/> <view:tax_nr/>
+      <repeat:activities join=", "><a target="_blank"/></repeat>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Person">
+  <card class="person" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><view:name/></a></h4>
+    </header:>
+    <body: param>
+      <view:person_grades if="&this.person_grades"/>
+      <div if="&this.relations_bit">
+        <span class="strong"><%= this.interpersonal_relations_count + this.person_to_org_relations_count %></span> kapcsolat 
+        (<span if="&this.interpersonal_relations_count>0">
+          <view:interpersonal_relations_count class="strong"/> személyes<span if="&this.person_to_org_relations_count>0">,</span>
+        </span>
+        <span if="&this.person_to_org_relations_count>0">
+          <view:person_to_org_relations_count class="strong"/> szervezeti
+        </span>)
+      </div>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="InterorgRelation">
+  <card class="interorg-relation" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a  target="_blank" href="#{url_for(this.tender_id ? this.tender : this.contract)}" class="interorg-relation-link"><view:name/></a></h4>
+    </header:>
+    <body: param>
+      <div>
+        Szervezet: <view:organization class="strong"/><br />
+        Szervezet: <view:related-organization class="strong"/><br />
+        Érték: <view: with="&commify(this.value)" class="strong"/><br />
+        Dátum: <view: with="&this.issued_at.strftime('%Y. %B %d.').downcase" class="strong"/>
+      </div>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Notification">
+  <card class="notification" param="default" merge>
+    <header: param>
+      <h3><a target="_blank"><view with="&commify(this.contracted_value)" /> HUF </a></h3>
+      <h4 param="heading"><a target="_blank"><name/></a></h4>
+    </header:>
+    <body: param>
+      <view:contracts.count/> szerződés
+    </body:>
+  </card>
+</def>
+
+
+<def tag="card" for="InformationSource">
+  <card class="information-source" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a></h4>
+    </header:>
+    <body: param>
+      <a if="web" href="#{this.web}" target="_blank"><view:web/></a>
+      internal: <editor:internal/>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Article">
+  <card class="article" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a></h4>
+    </header:>
+    <body: param>
+      <a target="_blank"><view:summary format="%Y. %b %d."/></a>
+      <i><view:issued_at/></i> -
+      forrás: <a target="_blank"><view:information_source.name/></a><span if="&this.original_source">, <a href="&this.original_internet_address" target="_blank"><view:original_source/></a></span><br/>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="InformationSource">
+  <card class="o_to_o-relation-type" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a></h4>
+      internal: <editor:internal/>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="OToORelationType">
+  <card class="o_to_o-relation-type" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a> <span if="&this.pair"> (<view:pair/>)</span></h4>
+      parsed: <editor:parsed/>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="OToPRelationType">
+  <card class="o_to_p-relation-type" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a> <span if="&this.pair"> (<view:pair/>)</span></h4>
+      parsed: <editor:parsed/>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="PToORelationType">
+  <card class="p_to_o-relation-type" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a> <span if="&this.pair"> (<view:pair/>)</span></h4>
+      parsed: <editor:parsed/>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="PToPRelationType">
+  <card class="p_to_p-relation-type" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a target="_blank"><name/></a> <span if="&this.pair"> (<view:pair/>)</span></h4>
+      parsed: <editor:parsed/>
+    </header:>
+  </card>
+</def>
+
+
+<!-- = = = = = = = FORMS = = = = = = = -->
+
+<extend tag='input' for='date'>
+  <old-input merge start-year="&1900" end-year="&Time.now.year"/>
+</extend>
+
+<def tag="form" for="Tender">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, project, op_name, amount, subsidy, currency, city, county, region, decided_at, decision_score, found, source, applicant, caller, information_source">
+    <caller-view:>
+      <name-one/>
+    </caller-view:>
+    <applicant-view:>
+      <name-one/>
+    </applicant-view:>
+
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'tenders.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Contract">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="no_of_proposals, name, description, sum_value, original_sum_value, s_vat_incl, contracted_value, c_vat_incl, original_contracted_value, estimated_value, e_vat_incl, currency, subject_and_qty, number, issued_at, case_number, buyer, notification, seller" param>
+      <seller-view:>
+        <name-one/>
+      </seller-view:>
+      <buyer-view:>
+        <name-one/>
+      </buyer-view:>
+      <notification-view:>
+        <name-one/>
+      </notification-view:>
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'contracts.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="Article">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, summary, information_source, internet_address, issued_at, original_internet_address">
+      <issued-at-view:>
+        <input start-year="&Time.now.year-100" end-year="&Time.now.year"/>
+      </issued-at-view:>
+    </field-list>    
+    <!--field-list unless="&@this.new_record?" fields="interpersonal_relations, interorg_relations, person_to_org_relations"> 
+      <interorg-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="organization, o_to_o_relation_type, related_organization, litigations">
+              <o_to_o-relation-type-view:>
+                <select-one options="&@o_to_o_types"/>
+              </o_to_o-relation-type-view:>
+              <organization-view:>
+                <name-one /> 
+              </organization-view:>
+              <related-organization-view:>
+                <name-one />
+              </related-organization-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </interorg-relations-view:>
+      <interpersonal-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="person, p_to_p_relation_type, related_person, litigations, article_relations">
+              <p_to_p-relation-type-view:>
+                <select-one options="&@p_to_p_types"/>
+                <input type="text" name="article[interpersonal_relations][#{ this_parent.new_record? ? 0 : this_parent.id }][information_source_id]" value="&@this.information_source_id" style="display:none" />
+                <input type="text" name="interpersonal_relations[#{ this_parent.new_record? ? 0 : this_parent.id }][article_relations][0][relationable_type]" value="InterpersonalRelation" style="display:none" />
+              </p_to_p-relation-type-view:>
+              <person-view:>
+                <name-one />
+              </person-view:>
+              <related-person-view:>
+                <name-one />
+              </related-person-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </interpersonal-relations-view:>
+      <person-to-org-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="person, p_to_o_relation_type, organization, litigations">
+              <p_to_o-relation-type-view:>
+                <select-one options="&@p_to_o_types"/>
+              </p_to_o-relation-type-view:>
+              <person-view:>
+                <name-one />
+              </person-view:>
+              <organization-view:>
+                <name-one />
+              </organization-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </person-to-org-relations-view:>
+    </field-list-->    
+    <div param="actions">
+      <submit label="#{ht 'articles.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="Person">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="last_name, first_name, person_grades, place_of_birth, born_at, mothers_name, information_source, user, selected_organization, manual_person_to_org_relations, manual_interpersonal_relations" param>
+      <place-of-birth-view:>
+        <name-one/>
+      </place-of-birth-view:>
+
+      <selected-organization-view:>
+        <select-one options="&this_parent.organizations"/>
+      </selected-organization-view:>
+
+      <information-source-view:>
+        <select-one options="&@info_sources"/> | <a href="&new_information_source_path"  target="_blank"><ht key="custom.new">new</ht></a>
+      </information-source-view:>
+      <born-at-view:>
+        <input start-year="&Time.now.year-100" end-year="&Time.now.year"/>
+      </born-at-view:>
+      <manual-person-to-org-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="organization, p_to_o_relation_type, article_relations, start_time, no_start_time, end_time, no_end_time, litigations, information_source">
+              <article-relations-view:>
+                <input-many>
+                  <a:article default="_blank"><view:id/></a>
+                  <name-one:article/>
+                </input-many>
+              </article-relations-view:>
+              <organization-view:>
+                <hjq-autocomplete value='&this ? "#{this.name} (ID:#{this.id})" : ""' source="&query_organizations_path" delay="200" minLength="3" />
+              </organization-view:>
+              <information-source-view:>
+                <select-one options="&@info_sources"/> | <a href="&new_information_source_path"  target="_blank"><ht key="custom.new">new</ht></a>
+              </information-source-view:>
+              <start-time-view: class="start-time-toggler" style="display:#{this_parent.no_start_time ? ' none;' : ' block;'}">
+                <input start-year="&Time.now.year-100" end-year="&Time.now.year"/>
+              </start-time-view:>
+              <end-time-view: class="end-time-toggler" style="display:#{this_parent.no_end_time ? ' none;' : ' block;'}">
+                <input start-year="&Time.now.year-100" end-year="&Time.now.year+100"/>
+              </end-time-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </manual-person-to-org-relations-view:>
+      <manual-interpersonal-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="related_person, p_to_p_relation_type, article_relations, litigations, information_source">
+              <p_to_p-relation-type-view:>
+                <select-one options="&@p_to_p_types"/>
+              </p_to_p-relation-type-view:>
+              <related-person-view:>
+                <hjq-autocomplete value='&this ? "#{this.name} (ID:#{this.id})" : ""' source="&query_people_path" delay="200" minLength="3" />
+              </related-person-view:>
+              <article-relations-view:>
+                <input-many>
+                  <a:article default="_blank"><view:id/></a>
+                  <name-one:article/>
+               </input-many>
+              </article-relations-view:>
+              <information-source-view:>
+                <select-one options="&InformationSource.not_internal"/> | <a href="&new_information_source_path"  target="_blank"><ht key="custom.new">new</ht></a>
+              </information-source-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </manual-interpersonal-relations-view:>
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'people.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+ 
+<def tag="form" for="Organization">
+ <form merge param="default">
+    <error-messages param/>
+   <field-list fields="name, org_grade, sector, activities, zip_code, city, street, company, trade_register_nr, tax_nr, email_address, phone, internet_address, fax, founded_at, number_of_employees, information_source, financials, user, manual_interorg_relations, manual_person_to_org_relations" param>
+      <information-source-view:>
+        <select-one options="&InformationSource.not_internal"/> | <a href="&new_information_source_path"  target="_blank"><ht key="custom.new">new</ht></a>
+      </information-source-view:>
+      <manual-person-to-org-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="person, o_to_p_relation_type, article_relations, start_time, no_start_time, end_time, no_end_time, litigations, information_source">
+              <article-relations-view:>
+                <input-many>
+                  <a:article target="_blank"><view:id/></a>
+                  <name-one:article/>
+                </input-many>
+              </article-relations-view:>
+              <person-view:>
+                <hjq-autocomplete value='&this ? "#{this.name} (ID:#{this.id})" : ""' source="&query_people_path" delay="200" minLength="3" />
+              </person-view:>
+              <information-source-view:>
+                <select-one options="&InformationSource.not_internal"/> | <a href="&new_information_source_path" target="_blank"><ht key="custom.new">new</ht></a>
+              </information-source-view:>
+              <start-time-view: class="start-time-toggler" style="display:#{this_parent.no_start_time ? ' none;' : ' block;'}">
+                <input start-year="&Time.now.year-100" end-year="&Time.now.year"/>
+              </start-time-view:>
+              <end-time-view: class="end-time-toggler" style="display:#{this_parent.no_end_time ? ' none;' : ' block;'}">
+                <input start-year="&Time.now.year-100" end-year="&Time.now.year+100"/>
+              </end-time-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </manual-person-to-org-relations-view:>
+      <manual-interorg-relations-view:>
+        <hjq-input-many>
+          <item:>
+            <field-list fields="related_organization, o_to_o_relation_type, article_relations, litigations, information_source">
+              <related-organization-view:>
+                <hjq-autocomplete value='&this ? "#{this.name} (ID:#{this.id})" : ""' source="&query_organizations_path" delay="200" minLength="3" />
+              </related-organization-view:>
+              <information-source-view:>
+                <select-one options="&InformationSource.not_internal"/> | <a href="&new_information_source_path" target="_blank"><ht key="custom.new">new</ht></a>
+              </information-source-view:>
+              <article-relations-view:>
+                <input-many>
+                  <a:article target="_blank"><view:id/></a>
+                  <name-one:article/>
+                </input-many>
+              </article-relations-view:>
+            </field-list>
+          </item:>
+        </hjq-input-many>
+      </manual-interorg-relations-view:>
+      <financials-view:>
+        <hjq-input-many fields="year, balance_sheet_total, turnover" />
+      </financials-view:>
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'organizations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<extend tag="form" for="Contract">
+  <old-form>
+    <field-list:>
+      <notification-view:>
+        <name-one/>
+      </notification-view:>
+      <seller-view:>
+        <name-one/>
+      </seller-view:>
+      <buyer-view:>
+        <name-one/>
+      </buyer-view:>
+    </field-list:>
+  </old-form>
+</extend>
+
+<extend tag="form" for="InformationSource">
+  <old-form>
+    <field-list: skip="internal, weblink"/>
+  </old-form>
+</extend>
+
+
+
+<def tag="form" for="InterpersonalRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, no_start_time, end_time, no_end_time, article_relations, information_source, litigations, p_to_p_relation_type">
+      <article-relations-view:>
+        <input-many>
+          <a:article default="_blank"><view:id/></a>
+          <name-one:article/>
+        </input-many>
+      </article-relations-view:>
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'interpersonal_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="PersonToOrgRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, end_time, no_end_time, article_relations, information_source, litigations, p_to_o_relation_type">
+      <article-relations-view:>
+        <input-many>
+          <a:article default="_blank"><view:id/></a>
+          <name-one:article/>
+        </input-many>
+      </article-relations-view:>
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'person_to_org_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="InterorgRelation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="start_time, end_time, no_end_time, article_relations, information_source, litigations, o_to_o_relation_type">
+      <article-relations-view:>
+        <input-many>
+          <a:article default="_blank"><view:id/></a>
+          <name-one:article/>
+        </input-many>
+      </article-relations-view:>
+    </field-list>
+    <div param="actions">
+      <submit label="#{ht 'interorg_relations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+<!-- = = = = = = = TABLES = = = = = = = -->
+
+
+<extend tag="table-plus">
+  <old-table-plus merge>
+    <empty-message:><span class="no_data">Nincs kapcsolódó adat</span></empty-message:>
+  </old-table-plus>
+</extend>
+
+<def tag="table-plus-person">
+  <div class="order_list" param="order-list">
+    <a href="/front/person_pagination/?sort=-person_to_org_relations_count" class="left #{!params[:sort] || @sort_field=='person_to_org_relations_count' ? 'active' : ''}">Legtöbb szervezeti kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-interpersonal_relations_count" class="left #{@sort_field=='interpersonal_relations_count' ? 'active' : ''}">Legtöbb személyes kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-search_result_count" class="left #{@sort_field=='search_result_count' ? 'active' : ''}">Legtöbbet keresett</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=-updated_at" class="left #{@sort_field=='updated_at' ? 'active' : ''}">Most frissített</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=this.name" class="left #{@sort_field=='this.name' ? 'active' : ''}">ABC sorrend</a>    
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=selected_organization" class="left #{@sort_field=='selected_organization' ? 'active' : ''}">Szervezet</a>
+    <div class="separator left">|</div>
+    <a href="/front/person_pagination/?sort=information_source" class="left #{@sort_field=='information_source' ? 'active' : ''}">Forras</a>
+
+  </div>
+  <table-plus fields="this, relations_counter, selected_organization, information_source" without-search-form merge>
+    <Person-heading:><span>Név</span></Person-heading:>
+    <selected-organization-heading:>Szervezet</selected-organization-heading:>
+    <relations-counter-heading:><span>Kapcsolat</span></relations-counter-heading:>
+    <information-source-heading:><span>Forrás</span></information-source-heading:>
+    <relations-counter-view:><%= this_parent.interpersonal_relations_count + this_parent.person_to_org_relations_count %></relations-counter-view:>
+    <selected-organization-view:><a with="&this" target="_blank"/></selected-organization-view:>
+    <information-source-view:><a with="&this" target="_blank"/></information-source-view:>
+    <this-view:><a target="_blank"/> <a target="_blank" href="/site_search/?type=p&id=#{this.id}"><img src="/images/plusz.png"/></a> </this-view:>
+    <selected-organization-view:><a target="_blank"/> <a unless="&this.nil?" href="/site_search/?type=o&id=#{this.id}" target="_blank"><img src="/images/plusz.png"/></a> </selected-organization-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'person_pagination', :sort=>params[:sort]}"/>
+  </table-plus>
+  <div param="table_footer" class="table_footer"><a href="#{people_path}">További személyek &gt;</a></div>
+</def>
+
+<def tag="table-plus-org">
+  <div class="order_list" param="order-list">
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'-person_to_org_relations_count'" class="left #{!params[:sort] || params[:sort]=='-person_to_org_relations_count' ? 'active' : ''}">Legtöbb személyes kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'-interorg_relations_count'" class="left #{params[:sort] && params[:sort]=='-interorg_relations_count' ? 'active' : ''}">Legtöbb szervezeti kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="/front/org_pagination/?sort=-search_result_count" class="left #{@sort_field=='search_result_count' ? 'active' : ''}">Legtöbbet keresett</a>
+     <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'-updated_at'" class="left #{params[:sort] && params[:sort]=='-updated_at' ? 'active' : ''}">Most frissített</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'-relations_counter'" class="left #{params[:sort] && params[:sort]=='-relations_counter' ? 'active' : ''}">Kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'this.name'" class="left #{params[:sort] && params[:sort]=='this.name' ? 'active' : ''}">ABC szerint</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'address'" class="left #{params[:sort] && params[:sort]=='address' ? 'active' : ''}">Cim</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'address'" class="left #{params[:sort] && params[:sort]=='address' ? 'active' : ''}">Cim</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'org_pagination', :sort=>'information_source'" class="left #{params[:sort] && params[:sort]=='information_source' ? 'active' : ''}">Forras</a>
+  </div>
+  <table-plus fields="this, address, relations_counter, information_source" without-search-form merge>
+    <Organization-heading:><span>Név</span></Organization-heading:>
+    <address-heading:><span>Cím</span></address-heading:>
+    <city-heading:><span>Város</span></city-heading:>
+    <street-heading:><span>Utca</span></street-heading:>
+    <zip-code-heading:><span>Irányítószám</span></zip-code-heading:>
+    <relations-counter-heading:><span>Kapcsolat</span></relations-counter-heading:>
+    <information-source-heading:><span>Forrás</span></information-source-heading:>
+    <relations-counter-view:><%= this_parent.interorg_relations_count + this_parent.person_to_org_relations_count %></relations-counter-view:>
+    <information-source-view:><a with="&this" target="_blank"/></information-source-view:>
+    <this-view:><a target="_blank"/> <a target="_blank" href="/site_search/?type=o&id=#{this.id}"><img src="/images/plusz.png"/></a> </this-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=>'org_pagination', :sort=>params[:sort]}"/>
+  </table-plus>
+  <div param="table_footer" class="table_footer"><a href="#{organizations_path}">További szervezetek &gt;</a></div>
+</def>
+
+<def tag="table-plus-trans">
+  <div class="order_list" param="order-list">
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'-value'" class="left #{!params[:sort] || params[:sort]=='-value' ? 'active' : ''}">Összeg</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'-issued_at'" class="left #{params[:sort] && params[:sort]=='-issued_at' ? 'active' : ''}">Legfrissebb</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'-name'" class="left #{params[:sort] && params[:sort]=='-name' ? 'active' : ''}">ABC szerint</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'organization'" class="left #{params[:sort] && params[:sort]=='organization' ? 'active' : ''}">Szervezet</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'o_to_o_relation_type'" class="left #{params[:sort] && params[:sort]=='o_to_o_relation_type' ? 'active' : ''}">Kapcsolat</a>
+    <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'related_organization'" class="left #{params[:sort] && params[:sort]=='related_organization' ? 'active' : ''}">Szervezet</a>
+     <div class="separator left">|</div>
+    <a href="&url_for :controller => 'front', :action => 'trans_pagination', :sort=>'information_source'" class="left #{params[:sort] && params[:sort]=='information_source' ? 'active' : ''}">Forras</a>
+    
+
+
+  </div>
+  <table-plus fields="name, issued_at, value, organization, o_to_o_relation_type.pair.name, related_organization, o_to_o_relation_type.name, information_source" without-search-form merge>
+    <name-heading:><span>Név</span></name-heading:>
+    <issued-at-heading:><span>Dátum</span></issued-at-heading:>
+    <value-heading:><span>Összeg</span></value-heading:>
+    <organization-heading:><span>Szervezet</span></organization-heading:>
+    <o_to_o-relation-type-name-heading:><span>Kapcsolat</span></o_to_o-relation-type-name-heading:>
+    <related-organization-heading:><span>Szervezet</span></related-organization-heading:>
+    <o_to_o-relation-type-pair-name-heading:><span>Kapcsolat</span></o_to_o-relation-type-pair-name-heading:>
+    <information-source-heading:><span>Forrás</span></information-source-heading:>
+    <organization-view:><a with="&this" target="_blank"/></organization-view:>
+    <related-organization-view:><a with="&this" target="_blank"/></related-organization-view:>
+    <information-source-view:><a with="&this" target="_blank"/></information-source-view:>
+    <name-view:><a target="_blank" href="#{url_for(this_parent.tender_id ? this_parent.tender : this_parent.contract)}"><%= this.scan(/./mu)[0..50] << (this.scan(/./mu).length > 50 ? '...' : '') %></a> <a target="_blank" href="/site_search/?type=t&id=#{this_parent.id}"><img src="/images/plusz.png"/></a> </name-view:>
+    <value-view:><a target="_blank" href="#{url_for(this_parent.tender_id ? this_parent.tender : this_parent.contract)}"><%= commify(this) %></a></value-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'trans_pagination', :sort=>params[:sort]}"/>
+  </table-plus>
+  <div param="table_footer" class="table_footer"><a href="#{transactions_path}">További tranzakciók &gt;</a></div>
+</def>
+
+<def tag="collection-litigation">
+  <collection>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: class="pagination bright" previous-label="&laquo;" next-label="&raquo;" params="&{:block=> 'litigation', :query=>params[:query], :date_from=>params[:date_from], :date_to=>params[:date_to]}"/>
+    </after-empty-message:>
+    <card:>
+      <after-body:>
+        <a target="_blank" with="&this" action="edit" class="button" if="&this.editable_by?(current_user)">Szerkeszt</a> <delete-button/>
+      </after-body:>
+    </card:>
+  </collection>
+</def>
+
+<def tag="collection-contract">
+  <collection>
+    <card:>
+      <header:>
+        <h4 class="heading">
+          <a><view:name/></a>
+        </h4>
+      </header:>
+      <body:>
+        <span>Érték: <view: with="&commify(this.contracted_value)"/></span><br />
+        <span>Vevő:  <a with="&this.buyer" target="_blank"/></span><br />
+        <span>Eladó: <a with="&this.seller" target="_blank"/></span><br />
+        <span>Kihírdetve: <view:issued_at/></span><br/>
+        <a target="_blank" with="&this" action="edit" class="button" if="&this.editable_by?(current_user)">Szerkeszt</a> <delete-button/>
+      </body:>
+    </card:>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: class="pagination bright" previous-label="&laquo;" next-label="&raquo;" params="&{:block=> 'contract', :address=>@detailed_search.address, :subject=>@detailed_search.subject, :query=>@detailed_search.query, :amount_from => @detailed_search.amount_from, :amount_to=>@detailed_search.amount_to, :date_from=>@detailed_search.date_from, :date_to=>@detailed_search.date_to, :cpvs => @detailed_search.cpvs.map{|a| '@'+a.id.to_s}, :sort=>params[:sort]}"/>
+    </after-empty-message:>
+  </collection>
+</def>
+
+
+<def tag="collection-tender">
+  <collection>
+    <card:>
+      <header:>
+        <h4 class="heading">
+          <a><view:name/></a>
+        </h4>
+      </header:>
+      <body:>
+        <span>Érték: <view: with="&commify(this.amount)"/></span><br />
+        <span>Pályáztató: <a with="&this.caller" target="_blank"/></span><br />
+        <span>Pályázó: <a with="&this.applicant" target="_blank"/></span><br />
+        <span>Döntés: <view:decided_at/></span>
+        <a target="_blank" with="&this" action="edit" class="button" if="&this.editable_by?(current_user)">Szerkeszt</a> <delete-button/>
+      </body:>
+    </card:>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: class="pagination bright" previous-label="&laquo;" next-label="&raquo;" params="&{:block=> 'tender', :address=>@detailed_search.address, :subject=>@detailed_search.subject, :query=>@detailed_search.query, :amount_from => @detailed_search.amount_from, :amount_to=>@detailed_search.amount_to, :date_from=>@detailed_search.date_from, :date_to=>@detailed_search.date_to, :sort=>params[:sort]}"/>
+    </after-empty-message:>
+  </collection>
+</def>
+
+
+<def tag="collection-transaction">
+  <collection>
+    <card:>
+      <header:>
+        <h4 class="heading">
+          <a><view with="&this._?.contract || this.tender"/></a>
+        </h4>
+      </header:>
+      <body:>
+        <span>Érték: <view: with="&commify(this.value)"/></span><br />
+        <span>Szervezet: <view:organization.name/></span><br />
+        <span>Szervezet: <view:related-organization.name/></span>
+      </body:>
+    </card:>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: class="pagination bright" previous-label="&laquo;" next-label="&raquo;" params="&{:block=> 'transaction', :address=>@detailed_search.address, :subject=>@detailed_search.subject, :query=>@detailed_search.query, :amount_from => @detailed_search.amount_from, :amount_to=>@detailed_search.amount_to, :date_from=>@detailed_search.date_from, :date_to=>@detailed_search.date_to, :sort=>params[:sort]}"/>
+    </after-empty-message:>
+  </collection>
+</def>
+
+
+<def tag="collection-organization">
+  <collection>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: previous-label="&laquo;" next-label="&raquo;" class="pagination bright" params="&{:block => 'org', :detailed_search=>{:query=>@detailed_search.query, :address=>@detailed_search.address, :sectors=>@detailed_search.sectors.map{|s| '@'+s.id.to_s}, :relations=>{:'0'=>{ :o_to_o_relation_types => @detailed_search.relations.try.first.try.o_to_o_relation_types.try.map{|a| '@'+a.id.to_s}}}, :relations => { :'0'=> { :p_to_o_relation_types => @detailed_search.relations.try.first.try.p_to_o_relation_types.try.map{|a| '@'+a.id.to_s}}}, :activities=>@detailed_search.activities.map{|a| '@'+a.id.to_s}, :place_of_births=>@detailed_search.place_of_births.map{|pob| '@'+pob.id.to_s}, :date_from=>@detailed_search.date_from, :date_to=>@detailed_search.date_to}}"/>
+    </after-empty-message:>
+    <card:>
+      <after-body:>
+        <a target="_blank" with="&this" action="edit" class="button" if="&this.editable_by?(current_user)">Szerkeszt</a> <delete-button/>
+      </after-body:>
+    </card:>
+  </collection>
+</def>
+
+<def tag="collection-person">
+  <collection>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: previous-label="&laquo;" next-label="&raquo;" class="pagination bright" params="&{:block => 'person', :detailed_search=>{:place_of_births=>@detailed_search.place_of_births.map{|pob| '@'+pob.id.to_s}, :relations => {:'0' => {:p_to_o_relation_types => @detailed_search.relations.try.first.try.p_to_o_relation_types.try.map{|a| '@'+a.id.to_s}}},  :relations => {:'0' => {:p_to_p_relation_types => @detailed_search.relations.try.first.try.p_to_p_relation_types.try.map{|a| '@'+a.id.to_s}}}, :query=>@detailed_search.query, :address=>@detailed_search.address, :date_from=>@detailed_search.date_from, :date_to=>@detailed_search.date_to}}"/>
+    </after-empty-message:>
+    <card:>
+      <after-body:>
+        <a target="_blank" with="&this" action="edit" class="button" if="&this.editable_by?(current_user)">Szerkeszt</a> <delete-button/>
+      </after-body:>
+    </card:>
+  </collection>
+</def>
+
+<def tag="collection-article">
+  <collection>
+    <card:>
+      <append-body:>
+        <a target="_blank" with="&this" action="edit" class="button" if="&this.editable_by?(current_user)">Szerkeszt</a> <delete-button/>
+      </append-body:>
+    </card:>
+    <empty-message:>Nincs találat</empty-message:>
+    <after-empty-message:>
+      <page-nav: class="pagination bright" previous-label="&laquo;" next-label="&raquo;" params="&{:block => 'article', :query=>@detailed_search.query}"/>
+    </after-empty-message:>
+  </collection>
+</def>
+
+<def tag="table-plus-article-interpersonal">
+  <table-plus fields="person, related_person, p_to_p_relation_type, information_source" without-search-form merge>
+    <controls:/><!--delete-button/></controls:-->
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'interpersonal_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-article-interorg">
+  <table-plus fields="organization, related_organization, o_to_o_relation_type, information_source" without-search-form>
+    <controls:/><!--delete-button/></controls:-->
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'interorg_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-article-person-to-org">
+  <table-plus fields="person, organization, p_to_o_relation_type, start_time, end_time, information_source" without-search-form>
+    <controls:/>
+    <end-time-view:>
+      <view format="%B %d, %Y" if="&!this_parent.no_end_time"/>
+      <ht if="&this_parent.no_end_time" key="custom.not_known">not known</ht>
+    </end-time-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'person_to_org_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-litigation-interpersonal">
+  <table-plus fields="person, p_to_p_relation_type, related_person, organization, information_source" without-search-form>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'interpersonal_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-litigation-interorg">
+  <table-plus fields="organization, o_to_o_relation_type, related_organization, information_source" without-search-form>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'interorg_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-litigation-person-to-org">
+  <table-plus fields="person, p_to_o_relation_type, organization, start_time, end_time, information_source" without-search-form>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'person_to_org_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-organization-person-to-org">
+  <table-plus fields="person, o_to_p_relation_type, start_time, end_time, information_source" without-search-form>
+    <controls:/>
+    <person-view:><a with="&this" target="_blank"/></person-view:>
+    <o_to_p-relation-type-view:>
+      <a with="&this" target="_blank">
+        <view/><span if="&this_parent.role">, <view with="&this_parent.role"/></span>
+      </a>
+    </o_to_p-relation-type-view:>
+    <article-relations-view:>
+      <% this.each do |r| %>
+        <a href="#{article_path(r.article_id)}"><view with="&r.article.name[0..60].strip + '...'"/></a><br/>
+      <% end %>
+    </article-relations-view:>
+    <end-time-view:>
+      <view format="%B %d, %Y" if="&!this_parent.no_end_time"/>
+      <ht if="&this_parent.no_end_time" key="custom.not_known">not known</ht>
+    </end-time-view:>
+    <information-source-view:>
+      <% @artcount = this_parent.articles.count %>
+      <a target="_blank" with="&this_parent" if="&@artcount != 0"> <view:information_source.name/> (<%= @artcount -%>)</a>
+      <else><view/></else>
+    </information-source-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:controller => 'organizations', :action=>'person_to_org_pagination', :id => @this.id, :sort => @sort}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-organization-interorg">
+  <table-plus fields="related_organization, o_to_o_relation_type, value, currency, vat_incl, contract, tender, information_source" without-search-form>
+    <controls:/>
+    <related-organization-view:><a with="&this" target="_blank"/></related-organization-view:>
+    <o_to_o-relation-type-view:><a with="&this" target="_blank"/></o_to_o-relation-type-view:>
+    <value-view:>
+      <view with="&commify(this)"/>
+    </value-view:>
+    <article-relations-view:>
+      <% this.each do |r| %>
+        <a target="_blank" href="#{article_path(r.article_id)}"><view with="&r.article.name[0..60].strip + '...'"/></a><br/>
+      <% end %>
+    </article-relations-view:>
+    <information-source-view:>
+      <% @artcount = this_parent.articles.count %>
+      <a target="_blank" with="&this_parent" if="&@artcount != 0"> <view:information_source.name/> (<%= @artcount -%>)</a>
+      <else><view/></else>
+    </information-source-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:action=>'interorg_pagination', :id => @this.id, :sort => @sort}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-organization-financial">
+  <table-plus fields="year, balance_sheet_total, turnover" without-search-form>
+    <controls:/>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:controller => 'organizations', :action=>'financial_pagination', :id => @this.id}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-person-interperson">
+  <table-plus fields="related_person, p_to_p_relation_type, organization, information_source" without-search-form>
+    <controls:/>
+    <related-person-heading-link: class="#{@people_sort=='related_person' ? 'strong' : ''}" href="/people/interpersonal_pagination?sort=related_person&id=#{@this.id}"/>
+    <p-to-p-relation-type-heading-link: class="#{@people_sort=='p_to_p_relation_type' ? 'strong' : ''}" href="/people/interpersonal_pagination?sort=p_to_p_relation_type&id=#{@this.id}"/>
+    <organization-heading-link: class="#{@people_sort=='organization' ? 'strong' : ''}" href="/people/interpersonal_pagination?sort=organization&id=#{@this.id}"/>
+    <information-source-heading-link: class="#{@people_sort=='information_source' ? 'strong' : ''}" href="/people/interpersonal_pagination?sort=information_source&id=#{@this.id}"/>
+    <related-person-view:><a with="&this" target="_blank"/></related-person-view:>
+    <organization-view:><a with="&this" target="_blank"/></organization-view:>
+    <p_to_p-relation-type-view:><a with="&this" target="_blank"/></p_to_p-relation-type-view:>
+    <article-relations-view:>
+      <% this.each do |r| %>
+        <a href="#{article_path(r.article_id)}"><view with="&r.article.name[0..60].strip + '...'"/></a><br/>
+      <% end %>
+    </article-relations-view:> 
+    <information-source-view:>
+      <% @artcount = this_parent.articles.count %>
+      <a target="_blank" with="&this_parent" if="&@artcount != 0"> <view:information_source.name/> (<%= @artcount -%>)</a>
+      <else><view/></else>
+    </information-source-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:controller => 'people', :action=>'interpersonal_pagination', :id => @this.id, :sort => @sort }"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-person-person-to-org">
+  <table-plus fields="organization, p_to_o_relation_type, start_time, end_time, information_source" without-search-form>
+    <controls:/>
+    <organization-heading-link: class="#{@org_sort=='organization' ? 'strong' : ''}" href="/people/person_to_org_pagination?sort=organization&id=#{@this.id}"/>
+    <p-to-o-relation-type-heading-link: class="#{@org_sort=='p_to_o_relation_type' ? 'strong' : ''}" href="/people/person_to_org_pagination?sort=p_to_o_relation_type&id=#{@this.id}"/>
+    <start-time-heading-link: class="#{@org_sort=='start_time' ? 'strong' : ''}" href="/people/person_to_org_pagination?sort=start_time&id=#{@this.id}"/>
+    <end-time-heading-link: class="#{@org_sort=='end_time' ? 'strong' : ''}" href="/people/person_to_org_pagination?sort=end_time&id=#{@this.id}"/>
+    <information-source-heading-link: class="#{@org_sort=='information_source' ? 'strong' : ''}" href="/people/person_to_org_pagination?sort=information_source&id=#{@this.id}"/>
+    <organization-view:><a with="&this" target="_blank"/></organization-view:>
+    <p_to_o-relation-type-view:>
+      <a with="&this" target="_blank">
+        <view/><span if="&this_parent.role">, <view with="&this_parent.role"/></span>
+      </a>
+    </p_to_o-relation-type-view:>
+    <article-relations-view:>
+      <% this.each do |r| %>
+        <a href="#{article_path(r.article_id)}"><view with="&r.article.name[0..60].strip + '...'"/></a><br/>
+      <% end %>
+    </article-relations-view:>
+    <end-time-view:>
+      <view format="%B %d, %Y" if="&!this_parent.no_end_time"/>
+      <ht if="&this_parent.no_end_time" key="custom.not_known">not known</ht>
+    </end-time-view:>
+    <information-source-view:>
+      <% @artcount = this_parent.articles.count %>
+      <a target="_blank" with="&this_parent" if="&@artcount != 0"> <view:information_source.name/> (<%= @artcount -%>)</a>
+      <else><view/></else>
+    </information-source-view:>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{:controller => 'people', :action=>'person_to_org_pagination', :id => @this.id, :sort => @sort}"/>
+  </table-plus>
+</def>
+
+<def tag="table-plus-person-history">
+  <table-plus fields="user, updated_at, parameters" without-search-form>
+    <user-view:><a with="&this" target="_blank"/></user-view:>
+    <controls:/>
+    <page-nav: previous-label="&laquo;" next-label="&raquo;"/>
+  </table-plus>
+</def>
+
+
+
+<!-- = = = = = = = PAGES / NODES = = = = = = = -->
+
+
+
+<def tag="node-show-page" polymorphic/>
+<def tag="node-show-page" for="Organization">
+  <show-page merge without-creator-link>
+    <!--append-custom-scripts:>
+      <hjq-assets/>
+    </append-custom-scripts:-->
+    <field-list: fields="address, phone, fax, email_address, internet_address, trade_register_nr, tax_nr, number_of_employees, information_source, activities">
+      <controls:/>
+      <internet-address-view:>
+        <a href='&"http://#{this.try.strip}"' target="_blank"><view/></a>
+      </internet-address-view:>
+    </field-list:>
+    <heading: class="left"/>
+    <record-flags: fields="kozhasznu, kiemelten_kozhasznu"/>
+    <after-heading:>
+      <a href="/site_search/?type=o&id=#{this.id}" target="_blank" param="to-map"><img src="/images/terkepre_vele.jpg" id="to_map_blue"/></a>  
+      <i><a style="color:darkBlue" if="&this.trade_register_nr and (current_user.administrator? or current_user.editor? or current_user.supervisor?) and File.exist?(Rails.root.to_s + '/public/orgs/' + this.trade_register_nr.scan(/\d+/).join.to_i.to_s + '.xml')" target="_blank" href="/orgs/#{this.trade_register_nr.scan(/\d+/).join.to_i}.xml"> | complex xml (click és ctrl-u) | </a></i><br/>
+      <a if="&this.klink" href="http://www.k-monitor.hu#{this.klink}" target="_blank"><ht key="custom.jump_to_k-monitor">View on k-monitor.hu</ht></a>
+    </after-heading:>
+    <append-content-body:>
+      <script>
+        (function($) {
+          $(function(){
+            $("#people_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+            $("#orgs_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+            $("#financial_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#financial_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+          });
+        })(jQuery)
+      </script>
+      <javascript name="highcharts"/>
+      <%= high_chart("my_id", @h) if @h and !@h.data.first[:data].empty? %>
+      <div class="contents">
+        <div class="tabs">
+          <div class="active tab"><a href="#people_content">SZEMÉLYEK</a></div><div class="separator"></div>
+          <div class="tab"><a href="#orgs_content">SZERVEZETEK</a></div><div class="separator"></div>
+          <div class="tab"><a href="#financial_content">PÉNZÜGYEK</a></div>
+        </div>
+        <div id="people_content" class="tab_content">
+          <table-plus-organization-person-to-org with="&@this.person_to_org_relations.paginate(:per_page=>10, :page=>params[:page])"/>
+        </div>
+        <div id="orgs_content" class="tab_content" style="display: none">
+          <table-plus-organization-interorg with="&@this.interorg_relations.paginate(:per_page=>10, :page=>params[:page])"/>
+        </div>
+        <div id="financial_content" class="tab_content" style="display: none">
+          <table-plus-organization-financial with="&@this.financials.paginate(:per_page=>10, :page=>params[:page])" fields="year, balance_sheet_total, turnover" without-search-form />
+        </div>
+      </div>
+      <if test="&current_user.signed_up? and @this.org_histories.count > 0">
+        <div class="details_header">Mentések:</div>
+        <table-plus with="&@this.org_histories" fields="user, updated_at, parameters" without-search-form/>
+      </if>
+      <form action="&'/organizations/' + this.id.to_s + '/merge'" method="get" if="&current_user.supervisor? or current_user.editor? or current_user.administrator?" >
+          <field-list fields="merge_from">
+            <merge-from-view:>
+              <hjq-autocomplete:organization source="&query_organizations_path" delay="200" minLength="3" />
+              <!--name-one/-->
+              Be aware! All data will be deleted after the merge of the organization you enter here!
+            </merge-from-view:>
+          </field-list>
+        <submit label="start merge!" style="display:inline"/>
+      </form>
+    </append-content-body:>
+  </show-page>
+</def>
+
+
+
+
+<def tag="node-show-page" for="Person">
+  <show-page merge without-creator-link>
+    <!--append-custom-scripts:>
+      <hjq-assets/>
+    </append-custom-scripts:-->
+    <record-flags: fields=""/>
+    <field-list: fields="address, mothers_name, place_of_birth, born_at, information_source"/>
+    <append-heading:>
+      <a href="/site_search/?type=p&id=#{this.id}" target="_blank" param="to-map"><img src="/images/terkepre_vele.jpg" id="to_map_blue"/></a>
+    </append-heading:>
+    <append-content-body:>
+      <script>
+        (function($) {
+          $(function(){
+            $("#people_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+            $("#orgs_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+            $("#histories_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#histories_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+
+            $("#people_content .field-heading-row a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content").html(data)}});
+              e.preventDefault();
+            });
+
+            $("#orgs_content .field-heading-row a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content").html(data)}});
+              e.preventDefault();
+            });
+
+          });
+        })(jQuery)
+      </script>
+      <div class="details_header">Kapcsolódó profilok:</div>
+      <div class="contents">
+        <div class="tabs">
+          <div class="active tab"><a href="#people_content">SZEMÉLYEK</a></div><div class="separator"></div>
+          <div class="tab"><a href="#orgs_content">SZERVEZETEK</a></div>
+        </div>
+
+        <% 
+          @people_sort ||= "related_person"
+          @people ||= InterpersonalRelation.ordered(@people_sort).apply_scopes(:person_id_is => @this.id).paginate(:per_page=>10, :page=>1)
+
+          @org_sort ||= "organization"
+          @orgs ||= PersonToOrgRelation.ordered(@org_sort).apply_scopes(:person_id_is => @this.id).paginate(:per_page=>10, :page=>1)
+
+        %>
+        <div id="people_content" class="tab_content">
+          <table-plus-person-interperson with="&@people"/>
+        </div>
+        <div id="orgs_content" class="tab_content" style="display: none">
+          <table-plus-person-person-to-org with="&@orgs"/>
+        </div>
+      </div>
+      <% @histories = @this.person_histories.paginate(:per_page=>10, :page=>params[:page]) %>
+      <% if current_user.signed_up? and @histories.count > 0 %>
+        <div class="details_header">Mentések:</div>
+        <div id="histories_content">
+          <table-plus-person-history with="&@histories"/>
+        </div>
+      <% end %>
+      <form action="&'/people/' + this.id.to_s + '/merge'" method="get" if="&current_user.supervisor? or current_user.editor? or current_user.administrator?" >
+          <field-list fields="merge_from">
+            <merge-from-view:>
+              <hjq-autocomplete:person source="&query_people_path" delay="220" minLength="3" />
+              <!--name-one/-->
+              Be aware! All data will be deleted after the merge of the person you enter here!
+            </merge-from-view:>
+          </field-list>
+        <submit label="start merge!" style="display:inline"/>
+      </form>
+    </append-content-body:>
+  </show-page>
+</def>
+
+<def tag="node-show-page" for="Litigation">
+  <show-page merge>
+    <!--append-custom-scripts:>
+      <hjq-assets/>
+    </append-custom-scripts:-->
+    <heading: class="left"/>
+    <after-heading:>
+      <a href="/site_search/?type=l&id=#{this.id}" target="_blank"><img src="/images/terkepre_vele.jpg" id="to_map_blue"/></a>
+    </after-heading:>
+    <append-content-body:>
+      <script>
+        (function($) {
+          $(function(){
+            $("#people_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+            $("#orgs_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+            $("#people_orgs_content .pagination a").live('click', function(e) {
+              $(this).html(spinnerImg);
+              $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_orgs_content .table-plus").html(data)}});
+              e.preventDefault();
+            });
+          });
+        })(jQuery)
+      </script>
+      <div class="details_header">Kapcsolódó profilok:</div>
+      <div class="contents">
+        <div class="tabs" style="width: 507px">
+          <div class="active tab"><a href="#people_content">SZEMÉLYEK</a></div><div class="separator"></div>
+          <div class="tab"><a href="#orgs_content">SZERVEZETEK</a></div><div class="separator"></div>
+          <div class="tab" style="width: 225px"><a href="#people_orgs_content">SZEMÉLYEK-SZERVEZETEK</a></div>
+        </div>
+        <% 
+           person_to_org_relation_ids = [] 
+           interpersonal_relation_ids = []
+           interorg_relation_ids = []
+           @this.litigation_relations.each do |rel|
+             if rel.litigable_type == "PersonToOrgRelation"
+               person_to_org_relation_ids << rel.litigable_id
+             elsif rel.litigable_type == "InterpersonalRelation"
+               interpersonal_relation_ids << rel.litigable_id
+             elsif rel.litigable_type == "InterorgRelation"
+               interorg_relation_ids << rel.litigable_id
+             end
+           end
+           @person_to_org_relations = PersonToOrgRelation.find_all_by_id   person_to_org_relation_ids
+           @interpersonal_relations = InterpersonalRelation.find_all_by_id interpersonal_relation_ids
+           @interorg_relations      = InterorgRelation.find_all_by_id      interorg_relation_ids
+        %>
+        <div id="people_content" class="tab_content">
+          <table-plus-litigation-interpersonal with="&@interpersonal_relations"/>
+        </div>
+        <div id="orgs_content" class="tab_content" style="display: none">
+          <table-plus-litigation-interorg with="&@interorg_relations"/>
+        </div>
+        <div id="people_orgs_content" class="tab_content" style="display: none">
+          <table-plus-litigation-person-to-org with="&@person_to_org_relations"/>
+        </div>
+      </div>
+    </append-content-body:>
+  </show-page>
+</def>
+
+<def tag="node-card">
+  <div id="person_node" class="node_attributes" style="#{this.kind_of?(Person) ? 'display: block' : 'display:none'}">
+    <do with="&this.kind_of?(Person) ? this : Person.new">
+      <ul>
+        <li>Név: <span class="name"><view:name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Ajnya neve: <span class="mothers_name"><view:mothers-name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Születési év: <span class="born_at"><view:born-at if-blank="Nincs adat" no-wrapper/></span></li>
+      </ul>
+    </do>
+  </div>
+  <div id="organization_node" class="node_attributes" style="#{this.kind_of?(Organization) ? 'display: block' : 'display:none'}">
+    <do with="&this.kind_of?(Organization) ? this : Organization.new">
+      <ul>
+        <li>Név: <span class="name"><view:name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Cím: <span class="address"><view:address if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Alapítás éve: <span class="founded_at"><view:founded-at if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Legfrissebb pénzügyi adatok</li>
+        <li>Év: <span class="year"><view:recent-financial-year.year if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Forgalom: <span class="turnover"><view:recent_financial_year.turnover if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Mérleg: <span class="balance"><view:recent_financial_year.balance_sheet_total if-blank="Nincs adat" no-wrapper/></span></li>
+      </ul>
+    </do>
+  </div>
+  <div id="litigation_node" class="node_attributes" style="#{this.kind_of?(Litigation) ? 'display: block' : 'display:none'}">
+    <do with="&this.kind_of?(Litigation) ? this : Litigation.new">
+      <ul>
+        <li>Név: <span class="name"><view:name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Per kezdete: <span class="start_time"><view:start-time if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Per vége: <span class="end_time"><view:end-time if-blank="Nincs adat" no-wrapper/></span></li>
+      </ul>
+    </do>
+  </div>
+  <div id="o_to_o_edge" class="node_attributes" style="#{this.kind_of?(InterorgRelation) ? 'display: block' : 'display:none'}">
+    <do with="&this.kind_of?(InterorgRelation) ? this : InterorgRelation.new">
+      <ul>
+        <li>Kapcsolat megnevezése: <span class="name"><view:name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Kapcsolodó szervezet: <span class="org"><view:organization.name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Kapcsolodó szervezet: <span class="org"><view:related-organization.name if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Időpont: <span class="issued_at"><view:issued-at if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Információ forrás: <span class="source"><view:information-source if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Érték: <span class="value"><view:value if-blank="Nincs adat" no-wrapper/></span></li>
+        <li>Hirdetmény: <span class="contract"><view with="&this.contract || this.tender" if-blank="Nincs adat" no-wrapper/></span></li>
+        <li></li>
+      </ul>
+    </do>
+  </div>
+</def>
+
+
+
+<def attrs='options, targets, remove-label, prompt, disabled, name' tag='select-many'><%
+  prompt ||= "Add #{this_field.titleize.singularize}"
+  options ||= this_field_reflection.klass.all(:conditions =>this.conditions).select {|x| can_view?(x)}
+  name ||= param_name_for_this
+                
+  values = this
+  remove_label ||= ht("hobo.actions.remove", :default=>'Remove')
+  -%>
+  <div class='input select-many' merge-attrs>
+    <div class='item-proto' style='display:none'>
+      <div class='item' param='proto-item'>
+        <span></span>
+        <input name='#{name}[]' type='hidden' param='proto-hidden'/>
+        <input class='remove-item' type='button' value='#{remove_label}' param='proto-remove-button'/>
+      </div>
+    </div>
+    <div class='items'>
+      <div class='item' repeat param='item'>
+        <span><%= h this.to_s %></span>
+        <input name='#{name}[]' type='hidden' value='@#{h this.id}' disabled='&disabled' param='hidden'/>
+        <input class='remove-item' type='button' value='#{remove_label}' disabled='&disabled' param='remove-button'/>
+      </div>
+    </div>
+    <select merge-attrs='&amp;{:disabled =&gt; disabled}' param>
+      <option value=''><prompt/></option>
+      <repeat with='&options'>
+        <if test='&this.in?(values)'>
+          <optgroup class='disabled-option' label='#{h this.to_s}' alt='@#{this.id}'>&nbsp;</optgroup>
+        </if>
+        <else>
+          <option value='@#{this.id}'><%= h this.to_s %></option>
+        </else>
+      </repeat>
+    </select>
+  </div>
+</def>
+
+
+
+ 
+
+<def attrs='minimum, fields, skip, more-skip, template' polymorphic tag='input-many-relation'>
+<%
+# helper function to create id's on buttons to facilitate testing
+def underize(s)
+  s.gsub(/\[/,"_").gsub(/\]/,"")
+end
+%>
+  <set empty='&this.empty?'/>
+  <% template ||= this.try.new_candidate || this.member_class.new %>
+  <% minimum ||= 0 ; minimum = minimum.to_i %>
+  <% skip ||= this.proxy_reflection.klass.reflect_on_all_associations.detect {|p| p.primary_key_name==this.proxy_reflection.primary_key_name}.try.name.to_s if this.respond_to? :proxy_reflection %>
+  <% skip += ",#{more_skip}" if more_skip -%>
+  <ul class='input-many #{this_field.dasherize} #{css_data :input_many_prefix, param_name_for_this} #{css_data(:minimum, minimum)}' merge-attrs>
+    <fake-field-context fake-field='-1' context='&template'>
+      <li class='input-many-li input-many-template' id='#{underize param_name_for_this}'>
+        <div class='input-many-item' param='default'>
+          <field-list param merge-attrs='fields' skip='&skip'/>
+        </div>
+      </li>
+    </fake-field-context>
+    <li class='input-many-li empty #{"hidden" unless this.empty? and minimum==0}' id='#{underize param_name_for_this}_-1_empty'>
+      <!-- HACK way to signal an empty collection to the controller -->
+      <input name='#{param_name_for_this}' class='empty-input' id='#{underize param_name_for_this}' type='hidden' value='' disabled='&(!this.empty? || minimum>0)'/>
+      <fake-field-context fake-field='-1' context='&template'>
+        <div param='empty-message'>
+          <ht key='#{this.class.to_s.underscore}.collection.empty_message'>
+            No <%= this.class.name.titleize.downcase.pluralize %>.
+          </ht>
+        </div>
+        <div class='buttons'>
+          <button param='add-item' id='#{underize param_name_for_this}_add'>+</button>
+        </div>
+      </fake-field-context>
+    </li>
+    <fake-field-context fake-field='0' context='&template'>
+      <li class='input-many-li' id='#{underize param_name_for_this}' if='&(this_parent.empty? && minimum>0)'>
+        <div class='input-many-item' param='default'>
+          <field-list param merge-attrs='fields' skip='&skip'/>
+        </div>
+      </li>
+    </fake-field-context>
+    <li class="input-many-li #{'record-with-errors' unless this.errors.empty?}" repeat id='#{underize param_name_for_this}'>
+      <error-messages class='sub-record' without-heading/>
+      <hidden-id-field/>
+      <div class='input-many-item' param='default'>
+        <field-list param merge-attrs='fields' skip='&skip'/>
+      </div>
+      <div class='buttons'>
+      </div>
+    </li>
+  </ul>
+</def>
+
+
+<def tag='page-nav'>
+  <select if="&this.total_pages.present?" class="page_selector">
+    <%= options_for_select((1..this.total_pages).map{|p| ["#{p}. oldal", p]}, this.current_page) %>
+  </select>
+  <%= will_paginate this, attributes.symbolize_keys.reverse_merge(:inner_window => 4, :previous_label => translate("hobo.actions.previous", :default=>"&laquo; Prev"), :next_label =>translate("hobo.actions.next", :default=>"Next &raquo;")) %>
+</def>
+
+
+
+<extend tag="show-page" for="PToORelationType"> 
+  <old-show-page merge> 
+    <collection: replace> 
+      <page-nav with="&@people" param="top-page-nav"/> 
+      <collection with="&@people" /> 
+      <page-nav with="&@people" param="bottom-page-nav"/> 
+    </collection:>
+  </old-show-page> 
+</extend> 
+
+   
+<extend tag="show-page" for="OToORelationType"> 
+  <old-show-page merge> 
+    <collection: replace> 
+      <page-nav with="&@organizations" param="top-page-nav"/> 
+      <collection with="&@organizations" /> 
+      <page-nav with="&@organizations" param="bottom-page-nav"/> 
+    </collection:>
+  </old-show-page> 
+</extend> 
+
+   
+<extend tag="show-page" for="PToPRelationType"> 
+  <old-show-page merge> 
+    <collection: replace> 
+      <page-nav with="&@people" param="top-page-nav"/> 
+      <collection with="&@people" /> 
+      <page-nav with="&@people" param="bottom-page-nav"/> 
+    </collection:>
+  </old-show-page> 
+</extend> 
+
+   

@@ -1,0 +1,2 @@
+<index-page without-count/>
+<%= google_analytics_js %>

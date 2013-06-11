@@ -1,0 +1,57 @@
+<index-page without-count without-top-page-nav without-bottom-page-nav without-content-header>
+  <append-head:>
+    <script>
+      (function($) {
+        $(function(){
+
+          $("#litigations_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#litigations_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#litigations_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#litigations_content").html(data)}});
+            e.preventDefault();
+          });
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <collection: replace>
+    <javascript name="highcharts"/>
+    <%= high_chart("my_id2", @h) %>
+    <div class="tabs" style="margin-top:36px">
+      <div class="tab active"><a href="#litigations_content"><%=t :transactions_caps  %></a></div>
+    </div>
+    <div id="litigations_content">
+      <table-plus-trans without-table-footer>
+        <order-list:>
+          <a href="/transactions/list?sort=-value" class="left active"><%=t :value_order  %></a>
+          <div class="separator left">|</div>
+          <a href="/transactions/list?sort=name" class="left"><%=t :alphabetical_order  %></a>
+          <div class="separator left">|</div>
+          <a href="/transactions/list?sort=-updated_at" class="left"><%=t :creation_order  %></a>
+          <div class="separator left">|</div>
+          <a href="/transactions/list?sort=organization" class="left"><%=t :organization  %></a>
+          <div class="separator left">|</div>
+          <a href="/transactions/list?sort=o_to_o_relation_type" class="left"><%=t :rels  %></a>
+          <div class="separator left">|</div>
+
+          <a href="/transactions/list?sort=related_organization" class="left"><%=t :related_organization  %></a>
+          <div class="separator left">|</div>
+          <a href="/transactions/list?sort=o_to_o_relation_type" class="left"><%=t :related_relation  %></a>
+          <div class="separator left">|</div>
+
+
+          <a href="/transactions/list?sort=information_source" class="left"><%=t :information_source  %></a>
+        </order-list:>
+        <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}" />
+      </table-plus-trans>
+    </div>
+    <div style="margin-top:10px">
+      <a href="http://ahalo.hu/search/transactions_eu.php?clear=1"><%=t :det_search_filter_trans  %></a>
+    </div>
+  </collection:>
+</index-page>
+<%= google_analytics_js %>

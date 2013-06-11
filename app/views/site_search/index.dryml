@@ -1,0 +1,160 @@
+<page>
+  <append-stylesheets:>
+    <stylesheet name="jquery-ui-1.8.17.custom"/>
+  </append-stylesheets:>
+  <scripts:>
+    <javascript name="jquery-1.4.4, jquery-ui-1.8.17.custom.min, AC_OETags.min, json2.min, cytoscapeweb.min, application, graph"/>
+    <script type='text/javascript'>
+      <%= "var __debug = true;" if Rails.env.development? %>
+      <%= "var __debug = false;" if Rails.env.production? %>
+      function log() {
+        if (__debug) {
+          for(var i=0; arguments.length > i; i++) {
+            console.log(arguments[i]);
+          }
+        }
+      }
+      var xmmlGraph = <%= @network.to_json %>;
+    </script>
+  </scripts:>
+  <content:>
+    <div id="map_wrapper">
+      <div id="map_panel" class="contents left">
+        <div id="map_tabs">
+          <div class="tab"><a id="map_link" href="#map_content">TÉRKÉP</a></div>
+          <div class="#{params[:type] && params[:id] ? '' : 'active'} tab"><a id="search_link" href="#search_content">KERESÉS</a></div>
+          <div class="#{params[:type] && params[:id] ? 'active' : ''} tab"><a id="profil_link" href="#profil_content">PROFIL</a></div>
+        </div>
+        <form action="">
+          <div id="map_content" style="display: none" class="tab_content">
+            <submit label="újrarajzolás" class="redraw"/>
+            <div id="checkbox_list">
+              <%  if @info.empty? %>
+                <input id="info_source" checked="checked" type="checkbox" name=""/><label class="strong">Források</label><br />
+              <% else %>
+                <input id="info_source" type="checkbox" name=""/><label class="strong">Források</label><br />
+              <% end %>
+              <% InformationSource.all.each do |source| %>
+              <%   if @info and @info.include?(source.id) or @info.empty? %>
+                <input class="info_source" checked="checked" type="checkbox" name="information_source[id][]" value="info#{source.id}"/><label><%= source.name %></label><br />
+
+              <%   else %>
+                <input class="info_source" type="checkbox" name="information_source[id][]" value="info#{source.id}"/><label><%= source.name %></label><br />
+              <%   end %>
+              <% end %>
+              <hr />
+              <input type="checkbox" checked="checked" name=""/><label class="strong">Közbeszerzések</label><br />
+              <input id="person_relation" checked="checked" type="checkbox" name=""/><label class="strong">Személyek</label><br />
+              <% PToORelationType.all.each do |rel_type| %>
+              <input class="person_relation" checked="checked" type="checkbox" id="p_to_o_relation_type" name="p_to_o_relation_type[id][]" value="p_to_o#{rel_type.id}"/><label><%= rel_type.graph_label %></label><br />
+              <% end %>
+              <% PToPRelationType.all.each do |rel_type| %>
+              <input class="person_relation" checked="checked" type="checkbox" id="p_to_p_relation_type" name="p_to_p_relation_type[id][]" value="p_to_p#{rel_type.id}"/><label><%= rel_type.graph_label %></label><br />
+              <% end %>
+              <input id="org_relation" type="checkbox" checked="checked" name=""/><label class="strong">Szervezetek</label><br />
+              <% OToPRelationType.all.each do |rel_type| %>
+              <input class="org_relation" type="checkbox" checked="checked" id="o_to_p_relation_type" name="o_to_p_relation_type[id][]" value="o_to_p#{rel_type.id}"/><label><%= rel_type.graph_label %></label><br />
+              <% end %>
+              <% (OToORelationType.visual + OToORelationType.litig).each do |rel_type| %>
+              <input class="org_relation" type="checkbox" checked="checked" id="o_to_o_relation_type" name="o_to_o_relation_type[id][]" value="o_to_o#{rel_type.id}"/><label><%= rel_type.graph_label %></label><br />
+              <% end %>
+            </div>
+          </div>
+        </form>
+        <div id="search_content" style="#{params[:type] && params[:id] ? 'display: none' : 'display: block'}" class="tab_content">
+          <label>Személy neve: </label><input class="autocomplete" id="people_autocomplete" type="text"/><img class="ajax_loader" id="people_search_ajax_loader" src="/images/autocomplete-ajax-loader.gif"/>
+          <div class="clear"></div>
+          <label>Szervezet neve: </label><input class="autocomplete" id="organization_autocomplete" type="text"/><img class="ajax_loader" id="organizations_search_ajax_loader" src="/images/autocomplete-ajax-loader.gif"/>
+          <div class="clear"></div>
+          <label>Per megnevezés: </label><input class="autocomplete" id="litigation_autocomplete" type="text"/><img class="ajax_loader" id="litigations_search_ajax_loader" src="/images/autocomplete-ajax-loader.gif"/>
+          <p id="network_info">Írja be amit keres, majd <br/>nyomja meg az ENTER-t!<br/><br/>A zöld szín a személyeket,<br/>a piros a szervezeteket jelöli.<br/><br/>Egy kattintással alapadatok a PROFIL fülön, két kattintással részletes adatok az ábra alatti táblázatokban érhetők el.</p>
+          <div class="clear"></div>
+        </div>
+        <div id="profil_content" style="#{params[:type] && params[:id] ? 'display: block' : 'display: none'}" class="tab_content">
+          <node-card with="&@explored_node"/>
+          <div id="p_to_p_edge" class="node_attributes">
+            <ul>
+              <li>Kapcsolat megnevezése: <span class="name"></span></li>
+              <li>Kapcsolódó személy: <span class="person"></span></li>
+              <li>Kapcsolódó személy: <span class="person"></span></li>
+              <li>Kezdete: <span class="start_time"></span></li>
+              <li>Vége: <span class="end_time"></span></li>
+              <li>Információ forrás: <span class="source"></span></li>
+            </ul>
+          </div>
+          <div id="p_to_o_edge" class="node_attributes">
+            <ul>
+              <li>Kapcsolat megnevezése: <span class="name"></span></li>
+              <li>Kapcsolódó személy: <span class="person"></span></li>
+              <li>Kapcsolódó szervezet: <span class="org"></span></li>
+              <li>Kezdete: <span class="start_time"></span></li>
+              <li>Vége: <span class="end_time"></span></li>
+              <li>Információ forrás: <span class="source"></span></li>
+            </ul>
+          </div>
+          <div id="o2l_edge" class="node_attributes">
+            <ul>
+              <li>Kapcsolat megnevezése: <span class="name"></span></li>
+              <li>Kapcsolódó szervezet: <span class="org"></span></li>
+              <li>Kapcsolódó per: <span class="litigation"></span></li>
+              <li>Kezdete: <span class="start_time"></span></li>
+              <li>Vége: <span class="end_time"></span></li>
+              <li>Információ forrás: <span class="source"></span></li>
+            </ul>
+          </div>
+          <div id="p2l_edge" class="node_attributes">
+            <ul>
+              <li>Kapcsolat megnevezése: <span class="name"></span></li>
+              <li>Kapcsolódó szermély: <span class="person"></span></li>
+              <li>Kapcsolódó per: <span class="litigation"></span></li>
+              <li>Kezdete: <span class="start_time"></span></li>
+              <li>Vége: <span class="end_time"></span></li>
+              <li>Információ forrás: <span class="source"></span></li>
+            </ul>
+          </div>
+          <input type="hidden" name="id" id="selected_type" value="#{params[:type] == 't' ? 'edge' : 'node'}"/>
+          <input type="hidden" name="id" id="selected_elem_id" value="#{@explored_node._?.id}"/>
+          <input type="hidden" name="type" id="selected_elem_type" value="#{params[:type] == 't' ? 'o_to_o' : params[:type]}"/>
+          <input type="hidden" name="search_type" id="search_type"/>
+          <p>
+            <a style="link #{params[:type] && params[:id] ? 'display: none' : ''}" href="#" id="load_node_relations">Háló bővítése a profil kapcsolataival</a>
+            <br /><br />
+            <a href="" id="load_node_details" style="link #{params[:type] && params[:id] ? 'display: block' : 'display: none'}">E profil kapcsolatai táblázatban</a>
+          </p>
+        </div>
+        <div id="graphtype_wrapper">
+          Elrendezés:
+          <select id="graphtype">
+            <option value="Tree">Fa struktúra</option>
+            <option value="Radial" selected="selected">Sugárirányú</option>
+            <option value="Circle" >Kör</option>
+            <option value="ForceDirected" >Erő vezérelt</option>
+          </select>
+          Távolság:
+          <div id="graph_distance" class="slider"></div>
+          Gravitáció:
+          <div id="graph_gravity" class="slider"></div>
+          Méret:
+          <div id="graph_node_size" class="slider"></div>
+        </div>
+        <a id="network_clean" href="">Kirajzolt háló törlése</a>
+
+      </div>
+      <div class="left" id="relationgraph"></div>
+    </div>
+    <div id="node_details_tab">
+      <a if="&@this" href="#" id="#{@this.class.to_s[0..0].downcase}#{@this.id}_tab_label" class="active"><%= @this.name %></a>
+      <a if="&@target" href="#" id="#{@target.class.to_s[0..0].downcase}#{@target.id}_tab_label"><%= @target.name %></a>
+    </div>
+    <div class="clear"></div>
+    <div id="map_node_details">
+      <node-show-page without-head without-header without-to-map without-footer>
+        <content: id="#{@this.class.to_s[0..0].downcase}#{@this.id}_content"/>
+      </node-show-page>
+      <node-show-page with="&@target" without-head without-header without-to-map without-footer>
+        <content: style="display:none" id="#{@target.class.to_s[0..0].downcase}#{@target.id}_content"/>
+      </node-show-page>
+      <div class="temp"></div>
+    </div>
+  </content:>
+</page>

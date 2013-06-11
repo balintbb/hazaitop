@@ -1,0 +1,21 @@
+<show-page>
+  <append-content-body:>
+    <if test="&current_user.signed_up? and ( @this.person_histories.count > 0 or @this.org_histories.count > 0 ) ">
+      <h3 class="save_history">Save History for People</h3>
+      <table-plus with="&@this.person_histories" fields="person, updated_at" without-search-form>
+     <person-view:> 
+             <a href="#{people_path}/#{this.id}" >
+             <view with="&this"/></a><br/>
+     </person-view>
+      </table-plus>
+      <h3 class="save_history">Save History for Organizations</h3>
+      <table-plus with="&@this.org_histories" fields="organization, updated_at" without-search-form>
+       <organization-view:> 
+             <a href="#{organizations_path}/#{this.id}" >
+             <view with="&this"/></a><br/>
+      </organization-view>
+      </table-plus>
+    </if>
+  </append-content-body:>
+</show-page>
+<%= google_analytics_js %>

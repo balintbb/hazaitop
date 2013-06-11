@@ -1,0 +1,3 @@
+<node-show-page without-head without-header without-to-map without-footer>
+  <content: id="#{@this.class.to_s[0..0].downcase}#{@this.id}_content"/>
+</node-show-page>

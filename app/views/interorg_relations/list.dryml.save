@@ -1,0 +1,24 @@
+<table-plus-trans with="&@transactions" without-table-footer>
+  <order-list:>
+    <a href="/transactions/list?sort=value" class="left #{!params[:sort] || @sort_field == 'value' ? 'active' : ''}">Érték szerint</a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=name" class="left #{@sort_field == 'name' ? 'active' : ''}">ABC szerint</a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=updated_at" class="left #{@sort_field == 'updated_at' ? 'active' : ''}">Beviteli sorrendben</a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=organization" class="left #{@sort_field == 'organization' ? 'active' : ''}">Szervezet</a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=o_to_o_relation_type" class="left #{@sort_field == 'o_to_o_relation_type' ? 'active' : ''}">Kapcsolat</a>
+    <div class="separator left">|</div>
+
+    <a href="/transactions/list?sort=related_organization" class="left #{@sort_field == 'related_organization' ? 'active' : ''}">Kapcsolodo Szervezet</a>
+    <div class="separator left">|</div>
+    <a href="/transactions/list?sort=interorg_relation_type" class="left #{@sort_field == 'related_o_to_o_relation_type' ? 'active' : ''}">Kapcsolodo kapcsolat</a>
+    <div class="separator left">|</div>
+
+ 
+    <a href="/transactions/list?sort=#{get_sort_param('information_source', 'desc')}" class="left #{@sort_field == 'information_source' ? 'active' : ''}">Forras</a>
+
+  </order-list:>
+  <page-nav: previous-label="&laquo;" next-label="&raquo;" params="&{ :action=> 'list', :sort=>params[:sort]}"/>
+</table-plus-trans>

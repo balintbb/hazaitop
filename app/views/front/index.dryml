@@ -1,0 +1,139 @@
+<page title="Home">
+
+  <!--append-custom-scripts:>
+    <hjq-assets/>
+  </append-custom-scripts:-->
+  <append-head:>
+
+
+    <script type="text/javascript" src="/javascripts/jquery.fancybox-1.3.4.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+
+
+    <script>
+      (function($) {
+        $(function(){
+
+          $("a#video_preview").fancybox({
+    				'width'				: '40%',
+		    		'height'			: '40%',
+    				'autoScale'			: false,
+		    		'transitionIn'		: 'elastic',
+    				'transitionOut'		: 'elastic',
+		    		'type'				: 'iframe'
+          });
+
+          $("#people_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#people_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#people_content").html(data)}});
+            e.preventDefault();
+          });
+
+          $("#orgs_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#orgs_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#orgs_content").html(data)}});
+            e.preventDefault();
+          });
+
+          $("#trans_content .pagination a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#trans_content").html(data)}});
+            e.preventDefault();
+          });
+          $("#trans_content .order_list a").live('click', function(e) {
+            $(this).html(spinnerImg);
+            $.ajax({url: $(this).attr('href'), success: function(data) {$("#trans_content").html(data)}});
+            e.preventDefault();
+          });
+        });
+      })(jQuery)
+    </script>
+  </append-head:>
+  <body: class="front-page"/>
+
+  <content:>
+    <div class="content-header">
+      <%
+        @image_sr = t(:preview_image)
+      %>
+      <a id="video_preview" class="left" href="http://player.vimeo.com/video/33670490?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=1"><img src="#{@image_sr}"/></a>
+      <img src="/images/video_right.png" class="left"/>
+      <div id="welcome_message" class="left">
+        <%=t :front1  %>
+        <div id="quick_search_content_wrapper">
+          <div class='search'>
+            <%
+              @quick_search = t(:quicksearch)
+            %>
+            <input class='live-search' type='search' id="quick_search_input" value="#{@quick_search}"/>
+            <spinner id='search-spinner'/>
+            <script>
+              jQuery('#quick_search_input').focus(function(){
+                jQuery(this).attr('value') == '#{@quick_search}' ? jQuery(this).attr('value', '') : '';;
+              });
+            </script>
+          </div>
+          <section class='hidden' id='search-results-panel'>
+            <h2><ht key='hobo.live_search.results_label'>Search Results</ht></h2><img class="close-button" src="/images/x.jpg"></img>
+            <section id='search-results'>&nbsp;</section>
+          </section>
+          <div class="clear" id="welcome_message_bottom">
+            <a href="/search/index.php" id="quick_search" class="left"> <%=t :detailed_search  %></a>
+          </div>
+        </div>
+      </div>
+      <img src="/images/video_bottom.png"/>
+    </div>
+    <div class="content_body">
+      <div class="contents">
+        <div class="tabs">
+          <div class="active tab"><a href="#people_content"><%=t :people_caps  %></a></div><div class="separator"></div>
+          <div class="tab"><a href="#orgs_content"><%=t :organizations_caps  %></a></div><div class="separator"></div>
+          <div class="tab"><a href="#trans_content"><%=t :transactions_caps  %></a></div>
+        </div>
+        <div id="people_content" class="tab_content">
+          <table-plus-person with="&@people" without-page-nav/>
+        </div>
+        <div id="orgs_content" class="tab_content" style="display: none">
+          <table-plus-org with="&@organizations" without-page-nav/>
+        </div>
+
+        <div id="trans_content" class="tab_content" style="display: none">
+          <table-plus-trans with="&@transactions" without-page-nav/>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+	<div style="display: none;">
+    <div id="inline1" style="width:400px;height:100px;overflow:auto;">
+      <iframe src="http://player.vimeo.com/video/33670490?title=0&amp;byline=0&amp;portrait=0" width="400" height="225" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+		</div>
+	</div>
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37427518-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  </script>
+  </content:>
+
+</page>
+<%= google_analytics_js %>
